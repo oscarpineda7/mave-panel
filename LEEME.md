@@ -16,7 +16,7 @@
 - **Ventas:** el botón **−** registra una venta con el precio de la tienda y el canal elegido arriba (**Local** u **Online / WhatsApp**). En el detalle del producto, “Vendí” permite poner otra cantidad, otro precio (descuento) y el canal.
 - **Costo:** cada producto puede tener su costo (no se ve en la tienda). “Llegó mercancía” pregunta cuánto se pagó por unidad y actualiza el costo.
 - **Pestaña Resumen:** vendido (por canal), ganancia, gastado en mercancía, valor del inventario, ventas por día y lo más vendido, por periodo. **Descargar Excel** trae 5 hojas: Resumen, Ventas por día, Por producto, Movimientos e Inventario.
-- **Aviso por correo:** `supabase/06_aviso_correo.sql` envía un correo (vía Resend) cuando un producto baja hasta su mínimo o se agota. Necesita dos claves en Supabase Vault: `resend_api_key` y `alert_email`.
+- **Aviso por correo:** `supabase/06_aviso_correo.sql` envía un correo (vía Resend) cuando un producto baja hasta su mínimo o se agota. Se ejecuta una vez en el SQL Editor reemplazando `PEGA_AQUI_LA_CLAVE` por la clave de Resend; el aviso llega al correo de la cuenta de administración.
 - Pruebas: `pruebas/e2e_inventario.js`, `pruebas/e2e_ventas.js` (y `pruebas/e2e.js` de la tienda).
 
 ## Qué hay en esta carpeta

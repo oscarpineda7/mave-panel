@@ -2,11 +2,10 @@
 -- 06: cuando un producto baja hasta su mínimo ("Avisar cuando queden") o se agota, llega un correo.
 -- Ejecutar una sola vez en Supabase > SQL Editor (después de 05). Es seguro volver a ejecutarlo.
 --
--- Usa Resend (resend.com, gratis hasta 3.000 correos al mes). Después de ejecutar este archivo,
--- guarda la clave de Resend y el correo de destino (solo una vez, en el SQL Editor):
---   select vault.create_secret('re_TU_CLAVE_DE_RESEND', 'resend_api_key');
---   select vault.create_secret('correo@ejemplo.com', 'alert_email');
--- Sin esas dos claves no se envía nada y todo lo demás sigue funcionando igual.
+-- Usa Resend (resend.com, gratis hasta 3.000 correos al mes). El correo llega a la cuenta de
+-- administración (tabla admins), o a la guardada en Vault como 'alert_email' si existe.
+-- ÚNICO CAMBIO ANTES DE EJECUTAR: al final de este archivo, reemplaza PEGA_AQUI_LA_CLAVE por la
+-- clave de Resend (empieza por re_). Sin clave no se envía nada y todo lo demás funciona igual.
 
 create extension if not exists pg_net with schema extensions;
 
@@ -34,6 +33,7 @@ begin
 
   select decrypted_secret into api_key from vault.decrypted_secrets where name = 'resend_api_key' limit 1;
   select decrypted_secret into to_email from vault.decrypted_secrets where name = 'alert_email' limit 1;
+  if to_email is null then select a.email into to_email from public.admins a order by a.created_at limit 1; end if;
   if api_key is null or to_email is null then return new; end if;
 
   if new.stock_after = 0 then
@@ -71,3 +71,22 @@ drop trigger if exists stock_movements_low_stock_email on public.stock_movements
 create trigger stock_movements_low_stock_email
   after insert on public.stock_movements
   for each row execute function private.notify_low_stock();
+
+-- ─────────────────────────────────────────────────────────────
+-- Clave de Resend: reemplaza PEGA_AQUI_LA_CLAVE (deja las comillas).
+-- ─────────────────────────────────────────────────────────────
+do $$
+declare
+  k text := trim('PEGA_AQUI_LA_CLAVE');
+begin
+  if k not like 're\_%' then
+    raise exception 'Falta la clave de Resend: reemplaza PEGA_AQUI_LA_CLAVE por tu clave (empieza por re_) y vuelve a tocar Run.';
+  end if;
+  delete from vault.secrets where name = 'resend_api_key';
+  perform vault.create_secret(k, 'resend_api_key');
+end $$;
+
+-- Debe mostrar a dónde llegarán los avisos.
+select 'Los avisos llegarán a: ' || coalesce(
+  (select decrypted_secret from vault.decrypted_secrets where name = 'alert_email' limit 1),
+  (select email from public.admins order by created_at limit 1)) as listo;
