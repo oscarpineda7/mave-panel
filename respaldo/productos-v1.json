@@ -1,0 +1,332 @@
+{
+  "exportado": "2026-11-04T18:19:29.942Z",
+  "categorias": [
+    {
+      "id": "all",
+      "label": "Todos"
+    },
+    {
+      "id": "shampoo",
+      "label": "Shampoo"
+    },
+    {
+      "id": "tratamiento",
+      "label": "Acondicionadores y tratamientos"
+    },
+    {
+      "id": "reparacion",
+      "label": "Reparadores y termoprotectores"
+    },
+    {
+      "id": "accesorios",
+      "label": "Accesorios"
+    },
+    {
+      "id": "cuerpo",
+      "label": "Cuidado corporal"
+    }
+  ],
+  "productos": [
+    {
+      "id": "duveshi-shampoo",
+      "cat": "shampoo",
+      "brand": "Duveshi",
+      "name": "Shampoo Romero y Jengibre",
+      "price": 42000,
+      "size": "500 ml",
+      "img": "duveshi-shampoo",
+      "short": "Cabello fuerte y saludable de forma natural.",
+      "desc": "Con extractos de aloe vera, romero, ortiga, jengibre y cebolla, más vitaminas B5 y biotina. Fórmula segura sin sulfatos, parabenos ni sal.",
+      "tags": [
+        "Sin sulfatos",
+        "Sin parabenos",
+        "Sin sal"
+      ],
+      "items": [
+        "Shampoo capilar romero y jengibre 500 ml"
+      ]
+    },
+    {
+      "id": "duveshi-frutal",
+      "cat": "tratamiento",
+      "brand": "Duveshi",
+      "name": "Tratamiento Nutritivo Frutal",
+      "price": 45000,
+      "size": "500 ml",
+      "img": "duveshi-frutal",
+      "short": "Crecimiento, suavidad y brillo.",
+      "desc": "Tratamiento capilar nutritivo con extractos frutales y aceites esenciales. Libre de siliconas, sulfatos, parabenos y sal.",
+      "tags": [
+        "Sin siliconas",
+        "Sin sulfatos",
+        "Sin sal"
+      ],
+      "items": [
+        "Tratamiento capilar nutritivo frutal 500 ml"
+      ]
+    },
+    {
+      "id": "duveshi-oro",
+      "cat": "reparacion",
+      "brand": "Duveshi",
+      "name": "Oro Líquido Reparador",
+      "price": 50000,
+      "size": "50 ml",
+      "img": "duveshi-oro",
+      "short": "Repara tus puntas y devuelve el brillo natural.",
+      "desc": "Repara las puntas, nutre y fortalece. Deja el cabello más suave y brillante. Libre de parabenos, orgánico y libre de crueldad animal.",
+      "tags": [
+        "Repara puntas",
+        "Orgánico",
+        "Cruelty free"
+      ],
+      "items": [
+        "Oro Líquido reparador capilar 50 ml"
+      ]
+    },
+    {
+      "id": "choco-shampoo",
+      "cat": "shampoo",
+      "brand": "Lluvia de Estrellas",
+      "name": "Shampoo Chocolate Rosado",
+      "price": 39000,
+      "size": "400 ml",
+      "img": "choco-shampoo",
+      "short": "Ultra nutritivo y reparador.",
+      "desc": "Extractos de cacao, papaya, romero y ácido hialurónico. Sin sal ni parabenos. Ideal para todo tipo de cabello.",
+      "tags": [
+        "Sin sal",
+        "Sin parabenos",
+        "Nutrición"
+      ],
+      "items": [
+        "Shampoo Chocolate Rosado 400 ml"
+      ]
+    },
+    {
+      "id": "choco-acond",
+      "cat": "tratamiento",
+      "brand": "Lluvia de Estrellas",
+      "name": "Acondicionador Chocolate Rosado",
+      "price": 38000,
+      "size": "400 ml",
+      "img": "choco-acond",
+      "short": "Suavidad, reparación y nutrición extrema.",
+      "desc": "Extractos de cacao, romero y papaya con aceite de argán. Sin sal ni parabenos.",
+      "tags": [
+        "Argán",
+        "Reparación",
+        "Sin sal"
+      ],
+      "items": [
+        "Acondicionador Chocolate Rosado 400 ml"
+      ]
+    },
+    {
+      "id": "miel-shampoo",
+      "cat": "shampoo",
+      "brand": "Lluvia de Estrellas",
+      "name": "Shampoo Miel Rosada",
+      "price": 37000,
+      "size": "400 ml",
+      "img": "miel-shampoo",
+      "short": "Hidratación, brillo y suavidad.",
+      "desc": "Extractos de miel, aloe vera, romero y papaya. Sin sal ni parabenos. Ideal para todo tipo de cabello.",
+      "tags": [
+        "Hidratación",
+        "Brillo",
+        "Sin sal"
+      ],
+      "items": [
+        "Shampoo Miel Rosada 400 ml"
+      ]
+    },
+    {
+      "id": "miel-acond",
+      "cat": "tratamiento",
+      "brand": "Lluvia de Estrellas",
+      "name": "Acondicionador Miel Rosada",
+      "price": 37500,
+      "size": "400 ml",
+      "img": "miel-acond",
+      "short": "Brillo extremo y nutrición real.",
+      "desc": "Extractos de miel, romero y aloe vera, con aceite de argán y vitamina E.",
+      "tags": [
+        "Brillo",
+        "Argán",
+        "Vitamina E"
+      ],
+      "items": [
+        "Acondicionador Miel Rosada 400 ml"
+      ]
+    },
+    {
+      "id": "lamour-polimero",
+      "cat": "tratamiento",
+      "brand": "L'amour",
+      "name": "Polímero Tratamiento Capilar",
+      "price": 44000,
+      "size": "",
+      "img": "lamour-polimero",
+      "short": "Tratamiento capilar para suavidad y brillo.",
+      "desc": "Tratamiento capilar Polímero de L'amour para un cabello más suave, manejable y con brillo.",
+      "tags": [
+        "Tratamiento",
+        "Brillo"
+      ],
+      "items": [
+        "Polímero tratamiento capilar"
+      ]
+    },
+    {
+      "id": "lehit-cebolla-sh",
+      "cat": "shampoo",
+      "brand": "Lehit",
+      "name": "Shampoo Cebolla y Jengibre",
+      "price": 25000,
+      "size": "300 g",
+      "img": "lehit-cebolla-sh",
+      "short": "Sin sal. Humectación y brillo.",
+      "desc": "Shampoo sin sal con cebolla y jengibre. Humectación y brillo, sin olor a cebolla y con una fragancia sofisticada. Libre de parabenos.",
+      "tags": [
+        "Sin sal",
+        "Sin parabenos",
+        "Sin olor a cebolla"
+      ],
+      "items": [
+        "Shampoo sin sal con cebolla y jengibre 300 g"
+      ]
+    },
+    {
+      "id": "lehit-cebolla-trat",
+      "cat": "tratamiento",
+      "brand": "Lehit",
+      "name": "Tratamiento Cebolla y Jengibre",
+      "price": 25000,
+      "size": "300 g",
+      "img": "lehit-cebolla-trat",
+      "short": "Hidratación y brillo, sin olor a cebolla.",
+      "desc": "Tratamiento acondicionador capilar con cebolla y jengibre. Hidratación y brillo con fragancia sofisticada. Sin sal, sin parabenos y sin sulfatos.",
+      "tags": [
+        "Sin sal",
+        "Sin sulfatos",
+        "Sin parabenos"
+      ],
+      "items": [
+        "Tratamiento acondicionador capilar con cebolla y jengibre 300 g"
+      ]
+    },
+    {
+      "id": "lehit-seda-sh",
+      "cat": "shampoo",
+      "brand": "Lehit",
+      "name": "Shampoo Gusano de Seda",
+      "price": 25000,
+      "size": "300 g",
+      "img": "lehit-seda-sh",
+      "short": "Control del frizz, sedosidad y brillo.",
+      "desc": "Shampoo sin sal con capullo de gusano de seda y vitamina E. Controla el frizz y deja el cabello sedoso y brillante. Sin parabenos ni sulfatos.",
+      "tags": [
+        "Sin sal",
+        "Anti frizz",
+        "Vitamina E"
+      ],
+      "items": [
+        "Shampoo sin sal con capullo de gusano de seda 300 g"
+      ]
+    },
+    {
+      "id": "lehit-seda-trat",
+      "cat": "tratamiento",
+      "brand": "Lehit",
+      "name": "Tratamiento Gusano de Seda",
+      "price": 25000,
+      "size": "300 g",
+      "img": "lehit-seda-trat",
+      "short": "Sedosidad y brillo con vitamina E.",
+      "desc": "Tratamiento acondicionador con capullo de gusano de seda y vitamina E. Control del frizz, sedosidad y brillo. Sin sal, sin parabenos y sin sulfatos.",
+      "tags": [
+        "Anti frizz",
+        "Sin sal",
+        "Sin sulfatos"
+      ],
+      "items": [
+        "Tratamiento acondicionador con capullo de gusano de seda 300 g"
+      ]
+    },
+    {
+      "id": "lpp-shampoo",
+      "cat": "shampoo",
+      "brand": "Leche Pal Pelo",
+      "name": "Shampoo Tradicional",
+      "price": 35000,
+      "size": "440 ml",
+      "img": "lpp-shampoo",
+      "short": "El clásico de Leche Pal Pelo.",
+      "desc": "Shampoo de la línea Tradicional de Leche Pal Pelo para el lavado de todos los días.",
+      "tags": [
+        "Línea Tradicional"
+      ],
+      "items": [
+        "Shampoo Tradicional 440 ml"
+      ]
+    },
+    {
+      "id": "lpp-termo",
+      "cat": "reparacion",
+      "brand": "Leche Pal Pelo",
+      "name": "Termoprotector Líquido",
+      "price": 30000,
+      "size": "250 ml",
+      "img": "lpp-termo",
+      "short": "Protege tu cabello del calor.",
+      "desc": "Termoprotector líquido en spray de la línea Tradicional. Aplícalo antes del secador o la plancha para proteger el cabello del calor.",
+      "tags": [
+        "Termoprotección",
+        "Spray"
+      ],
+      "items": [
+        "Termoprotector líquido 250 ml"
+      ]
+    },
+    {
+      "id": "lamour-medias",
+      "cat": "accesorios",
+      "brand": "L'amour",
+      "name": "Medias para el Cabello",
+      "price": 41000,
+      "size": "",
+      "badge": "Ondas sin calor",
+      "img": "lamour-medias",
+      "short": "Para hacer ondas sin calor.",
+      "desc": "Medias para hacer ondas sin calor. Las colocas con el cabello húmedo, duermes con ellas y al día siguiente tienes ondas definidas sin dañar tu cabello.",
+      "tags": [
+        "Sin calor",
+        "Ondas",
+        "Reutilizables"
+      ],
+      "items": [
+        "Medias para el cabello"
+      ]
+    },
+    {
+      "id": "masmelo",
+      "cat": "cuerpo",
+      "brand": "Truly",
+      "name": "Aceite After Shave Masmelo",
+      "price": 33000,
+      "size": "50 ml",
+      "img": "masmelo",
+      "short": "Calma, nutre y perfuma tu piel.",
+      "desc": "Aceite after shave con vainilla, fresa, péptidos, vitamina F y ácido hialurónico. Hidrata, nutre y calma, y deja la piel suave y perfumada. Vegano.",
+      "tags": [
+        "Vegano",
+        "Calmante",
+        "Aroma a masmelo"
+      ],
+      "items": [
+        "Aceite after shave Masmelo 50 ml"
+      ]
+    }
+  ]
+}

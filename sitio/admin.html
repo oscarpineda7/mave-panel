@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co; base-uri 'self'; form-action 'self'">
+<title>Panel MAVE Mujer</title>
+<link rel="icon" type="image/webp" href="img/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Panel: misma paleta y tipografías de la tienda; lista de productos en filas con acciones rápidas */
+:root{
+  --bg:#F6F1F6; --surface:#FFFFFF; --surface-2:#EEE4F0;
+  --ink:#33203B; --ink-soft:#6A5872; --violet:#7E4F9C; --violet-deep:#5E3778; --lilac:#C9B0DD; --rose:#B07C86;
+  --line:color-mix(in oklab, var(--rose) 40%, transparent);
+  --on-accent:#FFFFFF; --danger:#B3261E; --ok:#2E7D4F;
+  --f-display:"Cinzel","Trajan Pro",Georgia,serif;
+  --f-serif:"Cormorant Garamond",Garamond,Georgia,serif;
+  --f-body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --gutter-l:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17101B; --surface:#21182A; --surface-2:#2B1F35;
+    --ink:#F1E8F3; --ink-soft:#BFADC6; --violet:#C29BE0; --violet-deep:#D9BDF0; --lilac:#7A5A93;
+    --rose:#D5A3AB; --on-accent:#1B1220; --danger:#F2B8B5; --ok:#8FD3A8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17101B; --surface:#21182A; --surface-2:#2B1F35;
+  --ink:#F1E8F3; --ink-soft:#BFADC6; --violet:#C29BE0; --violet-deep:#D9BDF0; --lilac:#7A5A93;
+  --rose:#D5A3AB; --on-accent:#1B1220; --danger:#F2B8B5; --ok:#8FD3A8; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:1rem;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:env(safe-area-inset-bottom,0px)}
+[hidden]{display:none!important}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px;border-radius:6px}
+.wrap{max-width:960px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+
+header{position:sticky;top:0;z-index:5;background:color-mix(in oklab,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding-block:.6rem}
+a{color:inherit}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;min-width:0}
+.brand img{width:40px;height:40px;border-radius:50%;box-shadow:0 0 0 1px var(--line);flex:none}
+.brand b{font-family:var(--f-display);font-weight:400;letter-spacing:.16em;font-size:1rem}
+.brand small{display:block;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--rose)}
+.head-actions{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:999px;border:1px solid transparent;padding:.7rem 1.15rem;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-weight:400;cursor:pointer;text-decoration:none;min-height:44px;touch-action:manipulation}
+.btn svg{width:16px;height:16px;flex:none}
+.btn-primary{background:var(--violet);color:var(--on-accent)}
+.btn-ghost{background:transparent;border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--violet);color:var(--violet)}
+.btn-danger{background:var(--danger);color:#fff}
+:root[data-theme="dark"] .btn-danger{color:#2A0F0D}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn-danger{color:#2A0F0D} }
+.btn-sm{min-height:36px;padding:.45rem .8rem;font-size:.72rem}
+.btn[disabled]{opacity:.5;pointer-events:none}
+
+main{padding-block:1.4rem 6rem}
+h1{font-family:var(--f-serif);font-weight:500;font-size:clamp(1.8rem,4vw,2.4rem);line-height:1.1;margin:0}
+.muted{color:var(--ink-soft)}
+.notice{background:var(--surface-2);border-radius:16px;padding:1rem 1.1rem;font-size:.95rem}
+.notice code{font-size:.85em}
+
+/* Login */
+.auth{max-width:420px;margin:2rem auto 0;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:2rem 1.5rem;display:grid;gap:1rem}
+.auth h1{text-align:center}
+.auth p{margin:0;text-align:center}
+.linkish{background:none;border:0;color:var(--violet);text-decoration:underline;cursor:pointer;padding:.3rem;justify-self:center;font-size:.9rem}
+
+/* Formularios */
+.field{display:grid;gap:.35rem;min-width:0}
+.field label,.field .lbl{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:.75rem .85rem;font-size:1rem;min-height:46px}
+.field textarea{min-height:5.5rem;resize:vertical;line-height:1.45}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px color-mix(in oklab,var(--violet) 22%,transparent)}
+.hint{font-size:.82rem;color:var(--ink-soft)}
+.hint.warn{color:var(--danger)}
+.form-error{color:var(--danger);font-size:.9rem;margin:0}
+
+/* Barra de herramientas */
+.top{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.2rem}
+.tools{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.tools .field label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.count{font-size:.85rem;color:var(--ink-soft);margin:0 0 .6rem}
+
+/* Lista de productos */
+.list{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.row{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:.9rem;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:.7rem}
+.row img{width:72px;height:90px;object-fit:cover;border-radius:12px;background:var(--surface-2);display:block}
+.row .meta{min-width:0;display:grid;gap:.15rem}
+.row .meta b{font-weight:500;line-height:1.25;overflow-wrap:anywhere}
+.row .meta small{color:var(--ink-soft);font-size:.82rem}
+.row .price{font-variant-numeric:tabular-nums;font-size:1.05rem}
+.pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.15rem}
+.pill{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:999px;background:var(--surface-2);color:var(--ink-soft)}
+.pill.sold{background:var(--ink);color:var(--bg)}
+.pill.hidden{background:transparent;border:1px dashed var(--ink-soft)}
+.row .actions{display:grid;gap:.45rem;justify-items:end}
+.row .stock{justify-self:end}
+.toggles{display:flex;gap:.9rem}
+.switch{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--ink-soft);cursor:pointer;user-select:none}
+.switch input{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);position:relative;cursor:pointer;margin:0;flex:none;transition:background .2s}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.switch input:checked{background:var(--violet);border-color:var(--violet)}
+.switch input:checked::after{transform:translateX(16px)}
+.switch input:disabled{opacity:.5}
+.btns{display:flex;gap:.4rem}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:18px;padding:2rem 1rem;text-align:center;color:var(--ink-soft)}
+
+.fab{position:fixed;z-index:6;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 14px 30px -12px color-mix(in oklab,var(--violet) 70%,transparent)}
+
+/* Diálogos */
+dialog{border:0;padding:0;background:var(--surface);color:var(--ink);max-width:100%}
+dialog::backdrop{background:rgba(23,12,28,.5)}
+#editor{width:min(720px,100%);max-height:calc(100% - 32px);border-radius:24px}
+#editor[open]{display:flex;flex-direction:column}
+.ed-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.3rem;border-bottom:1px solid var(--line)}
+.ed-head h2{font-family:var(--f-serif);font-weight:500;font-size:1.6rem;margin:0}
+.ed-body{overflow:auto;padding:1.2rem 1.3rem;display:grid;gap:1rem}
+.ed-foot{display:flex;gap:.6rem;justify-content:flex-end;padding:1rem 1.3rem;border-top:1px solid var(--line);background:var(--bg);padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px))}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.photo{display:grid;grid-template-columns:120px 1fr;gap:1rem;align-items:center}
+.photo img{width:120px;height:150px;object-fit:cover;border-radius:14px;background:var(--surface-2);display:block}
+.photo .ph{width:120px;height:150px;border-radius:14px;border:1px dashed var(--line);display:grid;place-items:center;color:var(--ink-soft);font-size:.8rem;text-align:center;padding:.5rem}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.checks{display:flex;flex-wrap:wrap;gap:1.4rem}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;flex:none}
+.x svg{width:16px;height:16px}
+#confirm{width:min(420px,calc(100% - 32px));border-radius:22px;padding:1.4rem}
+#confirm h2{font-family:var(--f-serif);font-weight:500;font-size:1.5rem;margin:0 0 .5rem}
+#confirm p{margin:0 0 1.2rem;color:var(--ink-soft)}
+#confirm .btns{justify-content:flex-end;flex-wrap:wrap}
+.dlg-backdrop{position:fixed;inset:0;z-index:29;background:rgba(23,12,28,.5)}
+dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
+
+.toast{position:fixed;left:50%;bottom:calc(5.2rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:.75rem 1.2rem;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;z-index:40;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:var(--danger);color:#fff}
+.busy{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:color-mix(in oklab,var(--bg) 70%,transparent)}
+.busy p{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.8rem 1.3rem;margin:0}
+
+/* Inventario */
+.stock{display:inline-flex;align-items:center;gap:.35rem}
+.qty-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.35rem;line-height:1;cursor:pointer;display:grid;place-items:center;touch-action:manipulation;padding:0}
+.qty-btn:hover{border-color:var(--violet);color:var(--violet)}
+.qty-btn:active{background:var(--surface-2)}
+.qty-btn[disabled]{opacity:.4;pointer-events:none}
+.qty{min-width:64px;min-height:44px;border-radius:14px;border:0;background:var(--surface-2);cursor:pointer;display:grid;justify-items:center;align-content:center;padding:.2rem .5rem;line-height:1.1}
+.qty b{font-size:1.15rem;font-weight:500;font-variant-numeric:tabular-nums}
+.qty small{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.qty.low{background:color-mix(in oklab,var(--danger) 16%,var(--surface));color:var(--danger)}
+.qty.low small{color:var(--danger)}
+.qty.zero{background:var(--ink);color:var(--bg)}
+.qty.zero small{color:var(--bg)}
+.pill.low{background:color-mix(in oklab,var(--danger) 16%,var(--surface));color:var(--danger)}
+.low-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:1rem;border:1px solid color-mix(in oklab,var(--danger) 40%,transparent);background:color-mix(in oklab,var(--danger) 9%,var(--surface))}
+.low-banner b{color:var(--danger);font-weight:500}
+#stock-dlg{width:min(520px,100%);max-height:calc(100% - 32px);border-radius:24px}
+#stock-dlg[open]{display:flex;flex-direction:column}
+.sd-prod{display:flex;gap:.9rem;align-items:center}
+.sd-prod img{width:56px;height:70px;object-fit:cover;border-radius:10px;background:var(--surface-2);flex:none}
+.sd-prod small{display:block;color:var(--ink-soft);font-size:.82rem}
+.sd-big{display:flex;align-items:center;justify-content:center;gap:1.2rem;padding:.4rem 0}
+.sd-big .qty-btn{width:60px;height:60px;font-size:1.8rem}
+.sd-num{text-align:center;min-width:110px}
+.sd-num b{display:block;font-family:var(--f-serif);font-weight:500;font-size:3.2rem;line-height:1;font-variant-numeric:tabular-nums}
+.sd-num small{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.sd-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem;align-items:end}
+.history{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;font-size:.9rem}
+.history li{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;padding:.45rem 0;border-bottom:1px solid var(--line)}
+.history .d{font-variant-numeric:tabular-nums;font-weight:500;min-width:2.6rem}
+.history .d.up{color:var(--ok)} .history .d.down{color:var(--danger)}
+.history time{color:var(--ink-soft);font-size:.8rem}
+#labels{display:none}
+@media print{
+  body>*:not(#labels){display:none!important}
+  #labels{display:grid!important;grid-template-columns:repeat(3,1fr);gap:4mm;padding:0;margin:0}
+  .label{border:1px dashed #999;border-radius:3mm;padding:3mm;text-align:center;break-inside:avoid;color:#000;font-family:var(--f-body)}
+  .label svg{width:32mm;height:32mm;display:block;margin:0 auto 1.5mm}
+  .label b{display:block;font-size:9pt;font-weight:500;line-height:1.2}
+  .label small{display:block;font-size:7pt;color:#444}
+  @page{margin:10mm}
+}
+
+@media (max-width:700px){
+  .tools{grid-template-columns:1fr 1fr}
+  .tools .search{grid-column:1/-1}
+  .row{grid-template-columns:64px minmax(0,1fr)}
+  .row img{width:64px;height:80px}
+  .row .actions{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem .9rem;border-top:1px solid var(--line);padding-top:.6rem}
+  .row .btns{justify-content:flex-end;margin-left:auto}
+  .row .stock{flex-basis:100%;justify-content:flex-start}
+  .row .btn.stock{flex-basis:auto}
+  #add-btn{display:none}
+  #stock-dlg{max-height:100%;height:100%;border-radius:0;width:100%}
+  #editor{max-height:100%;height:100%;border-radius:0;width:100%}
+  .grid2{grid-template-columns:1fr}
+  .head-actions .lbl{display:none}
+}
+@media (max-width:380px){ .row .btns{margin-left:0} }
+@media (prefers-reduced-motion:reduce){ .switch input,.switch input::after,.toast{transition:none} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></g></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/></g></symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/></g></symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap">
+    <a class="brand" id="brand-link" href="index.html">
+      <img src="img/logo.webp" alt="">
+      <span><b>MAVE</b><small>Panel de productos</small></span>
+    </a>
+    <div class="head-actions">
+      <a class="btn btn-ghost btn-sm" id="store-link" href="index.html" target="_blank" rel="noopener"><svg><use href="#i-store"/></svg><span class="lbl">Ver tienda</span></a>
+      <button class="btn btn-ghost btn-sm" type="button" id="logout" hidden><svg><use href="#i-out"/></svg><span class="lbl">Salir</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="notice" id="setup" hidden>
+    <b>Falta conectar la base de datos.</b> Escribe la dirección y la clave pública de Supabase en <code>config.js</code> y vuelve a publicar la web. Las instrucciones están en <code>LEEME.md</code>.
+  </div>
+
+  <!-- Inicio de sesión -->
+  <form class="auth" id="login" hidden novalidate>
+    <h1>Entrar al panel</h1>
+    <p class="muted">Solo para la administración de MAVE Mujer.</p>
+    <div class="field"><label for="l-email">Correo</label><input id="l-email" type="email" autocomplete="username" inputmode="email" required></div>
+    <div class="field"><label for="l-pass">Contraseña</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+    <p class="form-error" id="l-error" role="alert" hidden></p>
+    <button class="btn btn-primary" type="submit" id="l-submit">Entrar</button>
+    <button class="linkish" type="button" id="l-forgot">¿Olvidaste tu contraseña?</button>
+  </form>
+
+  <!-- Nueva contraseña (al abrir el enlace del correo de recuperación) -->
+  <form class="auth" id="reset" hidden novalidate>
+    <h1>Nueva contraseña</h1>
+    <div class="field"><label for="r-pass">Nueva contraseña</label><input id="r-pass" type="password" autocomplete="new-password" minlength="8" required><span class="hint">Mínimo 8 caracteres.</span></div>
+    <p class="form-error" id="r-error" role="alert" hidden></p>
+    <button class="btn btn-primary" type="submit">Guardar contraseña</button>
+  </form>
+
+  <!-- Panel -->
+  <section id="app" hidden>
+    <div class="top">
+      <div><h1>Productos</h1><p class="muted" id="who" style="margin:.2rem 0 0;font-size:.9rem"></p></div>
+      <div class="btns" style="flex-wrap:wrap">
+        <button class="btn btn-ghost" type="button" id="labels-btn"><svg><use href="#i-qr"/></svg>Etiquetas QR</button>
+        <button class="btn btn-primary" type="button" id="add-btn"><svg><use href="#i-plus"/></svg>Agregar producto</button>
+      </div>
+    </div>
+    <div class="tools">
+      <div class="field search"><label for="f-q">Buscar</label><input id="f-q" type="search" placeholder="Buscar por nombre o marca" autocomplete="off"></div>
+      <div class="field"><label for="f-cat">Categoría</label><select id="f-cat"></select></div>
+      <div class="field"><label for="f-state">Estado</label>
+        <select id="f-state">
+          <option value="all">Todos los estados</option>
+          <option value="visible">Visibles</option>
+          <option value="hidden">Ocultos</option>
+          <option value="sold">Agotados</option>
+          <option value="low">Poco stock</option>
+          <option value="uncounted">Sin contar stock</option>
+        </select>
+      </div>
+    </div>
+    <div class="notice low-banner" id="low-banner" hidden>
+      <span id="low-text"></span>
+      <button class="btn btn-ghost btn-sm" type="button" id="low-show">Ver cuáles</button>
+    </div>
+    <p class="count" id="count"></p>
+    <ul class="list" id="list"></ul>
+  </section>
+</main>
+
+<button class="btn btn-primary fab" type="button" id="fab" hidden aria-label="Agregar producto"><svg><use href="#i-plus"/></svg>Agregar</button>
+
+<!-- Editor de producto -->
+<dialog id="editor" aria-labelledby="ed-title">
+  <form id="ed-form" novalidate style="display:contents">
+    <div class="ed-head">
+      <h2 id="ed-title">Agregar producto</h2>
+      <button class="x" type="button" data-close aria-label="Cerrar"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ed-body">
+      <div class="field">
+        <span class="lbl">Foto</span>
+        <div class="photo">
+          <div id="ed-preview"><div class="ph">Sin foto</div></div>
+          <div style="display:grid;gap:.5rem;justify-items:start">
+            <span class="btn btn-ghost file-btn"><svg><use href="#i-photo"/></svg><span id="ed-photo-lbl">Elegir foto</span><input id="ed-photo" type="file" accept="image/*" aria-label="Elegir foto del producto"></span>
+            <span class="hint">Desde la galería o la cámara. La foto se ajusta sola para que cargue rápido.</span>
+          </div>
+        </div>
+      </div>
+      <div class="field"><label for="ed-name">Nombre *</label><input id="ed-name" type="text" maxlength="80" required placeholder="Ej.: Shampoo Romero y Jengibre"></div>
+      <div class="grid2">
+        <div class="field"><label for="ed-brand">Marca</label><input id="ed-brand" type="text" maxlength="40" placeholder="Ej.: Duveshi" list="brands"><datalist id="brands"></datalist></div>
+        <div class="field"><label for="ed-cat">Categoría *</label><select id="ed-cat" required></select></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="ed-price">Precio en pesos *</label><input id="ed-price" type="text" inputmode="numeric" autocomplete="off" required placeholder="Ej.: 42000"><span class="hint" id="ed-price-hint"></span></div>
+        <div class="field"><label for="ed-size">Tamaño</label><input id="ed-size" type="text" maxlength="20" placeholder="Ej.: 500 ml"></div>
+      </div>
+      <div class="field"><label for="ed-short">Frase corta (se ve en la tarjeta)</label><input id="ed-short" type="text" maxlength="90" placeholder="Ej.: Cabello fuerte y saludable de forma natural."></div>
+      <div class="field"><label for="ed-desc">Descripción (se ve al abrir el producto)</label><textarea id="ed-desc" maxlength="600"></textarea></div>
+      <div class="field"><label for="ed-tags">Beneficios, separados por comas</label><input id="ed-tags" type="text" maxlength="160" placeholder="Ej.: Sin sal, Sin parabenos, Brillo"></div>
+      <div class="field"><label for="ed-items">Incluye (una línea por cada cosa)</label><textarea id="ed-items" maxlength="400" placeholder="Si lo dejas vacío se usa el nombre y el tamaño."></textarea></div>
+      <div class="grid2">
+        <div class="field"><label for="ed-badge">Etiqueta destacada</label><input id="ed-badge" type="text" maxlength="24" placeholder="Ej.: Nuevo"><span class="hint">Opcional. Reemplaza al tamaño en la esquina de la foto.</span></div>
+        <div class="field"><label for="ed-order">Orden en la tienda</label><input id="ed-order" type="number" inputmode="numeric" step="1"><span class="hint">Número menor = aparece antes.</span></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="ed-stock">Unidades en stock</label><input id="ed-stock" type="number" inputmode="numeric" min="0" step="1" placeholder="Ej.: 12"><span class="hint">Déjalo vacío si aún no las has contado. En 0 sale “Agotado” solo.</span></div>
+        <div class="field"><label for="ed-min">Avisar cuando queden</label><input id="ed-min" type="number" inputmode="numeric" min="0" step="1"><span class="hint">Con esa cantidad o menos se marca “poco stock”.</span></div>
+      </div>
+      <div class="checks">
+        <label class="switch"><input id="ed-available" type="checkbox" checked> Disponible (si lo apagas sale “Agotado”)</label>
+        <label class="switch"><input id="ed-visible" type="checkbox" checked> Visible en la tienda</label>
+      </div>
+      <p class="form-error" id="ed-error" role="alert" hidden></p>
+    </div>
+    <div class="ed-foot">
+      <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+      <button class="btn btn-primary" type="submit" id="ed-submit">Publicar producto</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Confirmación para eliminar -->
+<dialog id="confirm" aria-labelledby="cf-title">
+  <h2 id="cf-title">¿Eliminar producto?</h2>
+  <p id="cf-text"></p>
+  <div class="btns">
+    <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+    <button class="btn btn-ghost" type="button" id="cf-hide">Solo ocultar</button>
+    <button class="btn btn-danger" type="button" id="cf-delete">Eliminar</button>
+  </div>
+</dialog>
+
+<!-- Inventario de un producto -->
+<dialog id="stock-dlg" aria-labelledby="sd-title">
+  <div class="ed-head">
+    <div class="sd-prod"><img id="sd-img" src="img/logo.webp" alt=""><div><h2 id="sd-title" style="font-size:1.35rem">Inventario</h2><small id="sd-sub"></small></div></div>
+    <button class="x" type="button" data-close aria-label="Cerrar"><svg><use href="#i-close"/></svg></button>
+  </div>
+  <div class="ed-body">
+    <div class="sd-big">
+      <button class="qty-btn" type="button" id="sd-dec" aria-label="Restar una unidad (venta o salida)">−</button>
+      <div class="sd-num" aria-live="polite"><b id="sd-num">0</b><small id="sd-unit">unidades</small></div>
+      <button class="qty-btn" type="button" id="sd-inc" aria-label="Sumar una unidad">+</button>
+    </div>
+    <p class="hint" id="sd-state" style="text-align:center;margin:-.4rem 0 0"></p>
+    <form class="sd-row" id="sd-in-form">
+      <div class="field"><label for="sd-in">Llegó mercancía: ¿cuántas unidades?</label><input id="sd-in" type="number" inputmode="numeric" min="1" step="1" placeholder="Ej.: 6"></div>
+      <button class="btn btn-primary" type="submit">Sumar</button>
+    </form>
+    <form class="sd-row" id="sd-count-form">
+      <div class="field"><label for="sd-count">Conté la estantería: hay exactamente</label><input id="sd-count" type="number" inputmode="numeric" min="0" step="1"></div>
+      <button class="btn btn-ghost" type="submit">Guardar</button>
+    </form>
+    <form class="sd-row" id="sd-min-form">
+      <div class="field"><label for="sd-min">Avisar cuando queden</label><input id="sd-min" type="number" inputmode="numeric" min="0" step="1"></div>
+      <button class="btn btn-ghost" type="submit">Guardar</button>
+    </form>
+    <div class="field">
+      <span class="lbl">Últimos movimientos</span>
+      <ul class="history" id="sd-history"></ul>
+    </div>
+    <button class="btn btn-ghost" type="button" id="sd-label" style="justify-self:start"><svg><use href="#i-qr"/></svg>Imprimir etiqueta QR</button>
+  </div>
+</dialog>
+
+<!-- Etiquetas QR: elegir productos -->
+<dialog id="labels-dlg" aria-labelledby="lb-title" style="width:min(460px,calc(100% - 32px));border-radius:22px;padding:1.4rem">
+  <h2 id="lb-title" style="font-family:var(--f-serif);font-weight:500;font-size:1.5rem;margin:0 0 .5rem">Etiquetas QR</h2>
+  <p class="muted" style="margin:0 0 1rem">Pega cada etiqueta en el producto o en su estante. Al escanearla con la cámara del celular se abre este panel directo en ese producto, con sus botones − y +.</p>
+  <div class="field" style="margin-bottom:1rem"><label for="lb-which">¿Cuáles?</label>
+    <select id="lb-which">
+      <option value="shown">Los que se ven ahora en la lista</option>
+      <option value="all">Todos los productos</option>
+    </select>
+  </div>
+  <div class="field" style="margin-bottom:1.2rem"><label for="lb-copies">Copias de cada una</label><input id="lb-copies" type="number" min="1" max="30" step="1" value="1" inputmode="numeric"></div>
+  <div class="btns" style="justify-content:flex-end">
+    <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+    <button class="btn btn-primary" type="button" id="lb-print">Imprimir</button>
+  </div>
+</dialog>
+<div id="labels" aria-hidden="true"></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="busy" id="busy" hidden><p id="busy-text">Guardando…</p></div>
+
+<script src="config.js"></script>
+<script src="vendor/supabase-2.118.0.js"></script>
+<script src="vendor/qrcode-generator-1.4.4.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<title>MAVE Mujer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
+<style>
+/* Layout: tienda boutique en perla lavanda; el logo circular es el sello de la portada y los aros rose-gold se repiten como detalle */
+:root{
+  --bg:#F6F1F6;
+  --surface:#FFFFFF;
+  --surface-2:#EEE4F0;
+  --ink:#33203B;
+  --ink-soft:#6A5872;
+  --violet:#7E4F9C;
+  --violet-deep:#5E3778;
+  --lilac:#C9B0DD;
+  --rose:#B07C86;
+  --line:color-mix(in oklab, var(--rose) 40%, transparent);
+  --on-accent:#FFFFFF;
+  --shadow:0 24px 48px -28px color-mix(in oklab, var(--violet) 50%, transparent);
+  --f-display:"Cinzel","Trajan Pro",Georgia,serif;
+  --f-serif:"Cormorant Garamond",Garamond,Georgia,serif;
+  --f-body:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-script:"Pinyon Script","Snell Roundhand","Apple Chancery",cursive;
+  --gutter-l:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17101B; --surface:#21182A; --surface-2:#2B1F35;
+    --ink:#F1E8F3; --ink-soft:#BFADC6; --violet:#C29BE0; --violet-deep:#D9BDF0; --lilac:#7A5A93;
+    --rose:#D5A3AB; --on-accent:#1B1220; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17101B; --surface:#21182A; --surface-2:#2B1F35;
+  --ink:#F1E8F3; --ink-soft:#BFADC6; --violet:#C29BE0; --violet-deep:#D9BDF0; --lilac:#7A5A93;
+  --rose:#D5A3AB; --on-accent:#1B1220; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-weight:300;font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:6px}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:400}
+p{margin:0}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.eyebrow{font-size:.72rem;text-transform:uppercase;letter-spacing:.28em;color:var(--rose)}
+.price{font-variant-numeric:tabular-nums;font-weight:400}
+
+.demo-note{background:var(--surface-2);color:var(--ink-soft);font-size:.78rem;text-align:center;padding-block:.45rem}
+
+/* Cabecera */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in oklab,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.65rem}
+.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.brand img{width:44px;height:44px;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
+.brand-name{font-family:var(--f-display);font-size:1.15rem;letter-spacing:.18em;line-height:1}
+.brand-name em{display:block;font-family:var(--f-script);font-style:normal;font-size:1.05rem;letter-spacing:0;color:var(--rose);margin-top:.1rem}
+nav ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink-soft)}
+nav a:hover{color:var(--violet)}
+.cart-btn{position:relative;display:inline-flex;align-items:center;gap:.55rem;background:var(--violet);color:var(--on-accent);border:0;border-radius:999px;padding:.6rem 1.05rem;cursor:pointer;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+.cart-btn svg{width:18px;height:18px}
+.cart-count{min-width:1.35rem;height:1.35rem;border-radius:999px;background:var(--on-accent);color:var(--violet);font-size:.72rem;letter-spacing:0;display:grid;place-items:center;font-weight:500;font-variant-numeric:tabular-nums}
+.cart-btn.bump{animation:bump .35s ease}
+@keyframes bump{50%{transform:scale(1.08)}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-weight:400;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:.85rem 1.4rem;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:transform .2s ease,background .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--violet);color:var(--on-accent)}
+.btn-ghost{border-color:var(--rose);background:transparent}
+.btn-ghost:hover{background:color-mix(in oklab,var(--rose) 14%,transparent)}
+.btn svg{width:16px;height:16px;flex:none}
+.btn[disabled]{opacity:.45;pointer-events:none}
+
+/* Portada */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:3rem;padding-block:4rem 3.5rem}
+.hero h1{font-family:var(--f-serif);font-size:clamp(2.5rem,5.4vw,4.3rem);line-height:1.04;margin-top:1rem}
+.hero h1 .script{display:block;font-family:var(--f-script);color:var(--violet);font-size:1.12em;line-height:1.15}
+.hero .lead{margin-top:1.3rem;max-width:33rem;font-size:1.08rem;color:var(--ink-soft)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+.perks{display:flex;flex-wrap:wrap;gap:.6rem 1.6rem;margin-top:2.2rem;padding:0;list-style:none;font-size:.86rem;color:var(--ink-soft)}
+.perks li{display:flex;align-items:center;gap:.5rem}
+.perks svg{width:16px;height:16px;color:var(--rose);flex:none}
+.seal{position:relative;justify-self:center;width:min(430px,100%);aspect-ratio:1;max-width:100%}
+.seal img{position:absolute;inset:9%;width:82%;height:82%;border-radius:50%;box-shadow:var(--shadow),0 0 0 1px var(--line)}
+.seal svg.rings{position:absolute;inset:0;width:100%;height:100%;color:var(--rose)}
+.seal .spin{transform-origin:50% 50%;animation:spin 60s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.glow{position:absolute;right:-15%;bottom:-10%;width:70%;height:80%;pointer-events:none;opacity:.55;background:radial-gradient(closest-side,color-mix(in oklab,var(--lilac) 60%,transparent),transparent 70%)}
+
+/* Marcas */
+.brands{border-block:1px solid var(--line);background:var(--surface)}
+.brands .wrap{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.6rem 1.5rem;padding-block:1.2rem}
+.brands span{font-family:var(--f-display);font-size:.82rem;letter-spacing:.2em;color:var(--ink-soft);white-space:nowrap}
+.brands b{font-weight:400;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--rose)}
+
+/* Secciones */
+section.block{padding-block:4.5rem}
+.sec-head{display:grid;gap:.7rem;text-align:center;justify-items:center;margin-bottom:2.2rem}
+.sec-head h2{font-family:var(--f-serif);font-size:clamp(2rem,4vw,2.9rem);line-height:1.1}
+.sec-head h2 em{font-family:var(--f-script);font-style:normal;color:var(--violet);font-size:1.15em}
+.sec-head p{max-width:36rem;color:var(--ink-soft)}
+
+/* Filtros */
+.filters{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-bottom:2.2rem}
+.chip{border:1px solid var(--line);background:transparent;border-radius:999px;padding:.5rem 1rem;font-size:.84rem;cursor:pointer;color:var(--ink-soft)}
+.chip:hover{border-color:var(--violet);color:var(--violet)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+
+/* Productos */
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6rem 1.3rem}
+.card{display:grid;grid-template-rows:auto 1fr;gap:.9rem;min-width:0}
+.card .media{position:relative;display:block;width:100%;aspect-ratio:4/5;max-width:100%;border-radius:22px;overflow:hidden;background:var(--surface-2);border:0;padding:0;cursor:pointer}
+.card .media img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.card .media:hover img{transform:scale(1.04)}
+.badge{position:absolute;top:.75rem;left:.75rem;background:color-mix(in oklab,var(--surface) 90%,transparent);color:var(--ink);backdrop-filter:blur(6px);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;padding:.32rem .65rem;border-radius:999px}
+.badge.new{background:var(--violet);color:var(--on-accent)}
+.card .info{display:grid;grid-template-rows:auto auto 1fr auto;gap:.3rem}
+.card .brand-tag{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose)}
+.card h3{font-family:var(--f-serif);font-size:1.35rem;line-height:1.15;font-weight:500}
+.card h3 button{all:unset;cursor:pointer}
+.card h3 button:focus-visible{outline:2px solid var(--violet);outline-offset:3px;border-radius:4px}
+.card .short{color:var(--ink-soft);font-size:.9rem;line-height:1.45}
+.card .buy{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.6rem}
+.card .price{font-size:1.1rem}
+.add{display:inline-flex;align-items:center;gap:.4rem;border:1px solid var(--violet);color:var(--violet);background:transparent;border-radius:999px;padding:.5rem .9rem;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.add:hover,.add.done{background:var(--violet);color:var(--on-accent)}
+.add svg{width:14px;height:14px}
+.empty-filter{text-align:center;color:var(--ink-soft);grid-column:1/-1}
+
+/* Cómo comprar */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;counter-reset:s;list-style:none;margin:0;padding:0}
+.steps li{display:grid;gap:.5rem;align-content:start;padding-top:1.3rem;border-top:1px solid var(--line)}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--f-display);font-size:2rem;color:var(--rose);line-height:1}
+.steps h3{font-family:var(--f-serif);font-size:1.5rem}
+.steps p{color:var(--ink-soft)}
+
+/* Contacto */
+.contact{background:var(--surface);border-block:1px solid var(--line)}
+.contact .wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:3rem;align-items:center}
+.contact h2{font-family:var(--f-serif);font-size:clamp(2rem,4vw,2.9rem);line-height:1.1}
+.contact h2 em{font-family:var(--f-script);font-style:normal;color:var(--violet);font-size:1.15em}
+.contact .lead{color:var(--ink-soft);margin-top:1rem;max-width:30rem}
+.contact-list{display:grid;margin:0}
+.contact-list div{display:grid;grid-template-columns:7.5rem 1fr auto;gap:1rem;align-items:center;padding-block:1rem;border-top:1px solid var(--line)}
+.contact-list div:last-child{border-bottom:1px solid var(--line)}
+.contact-list dt{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose)}
+.contact-list dd{margin:0;font-size:1.05rem;min-width:0;overflow-wrap:anywhere}
+.contact-list dd a{text-decoration:none;border-bottom:1px solid var(--line)}
+.link-btn{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--violet);color:var(--violet);border-radius:999px;padding:.4rem .85rem;white-space:nowrap}
+.link-btn:hover{background:var(--violet);color:var(--on-accent)}
+.link-btn svg{width:14px;height:14px}
+.wa-float{position:fixed;z-index:15;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#fff;box-shadow:0 12px 28px -10px rgba(20,90,50,.6);transition:transform .2s}
+.wa-float:hover{transform:scale(1.06)}
+.wa-float svg{width:30px;height:30px}
+
+footer{padding-block:3rem 2.5rem;text-align:center;color:var(--ink-soft);font-size:.86rem}
+footer .wrap{display:grid;justify-items:center;gap:.7rem}
+footer .mark{font-family:var(--f-display);letter-spacing:.3em;font-size:1.3rem;color:var(--ink)}
+footer .mark em{font-family:var(--f-script);font-style:normal;letter-spacing:0;color:var(--rose);font-size:1.3rem;margin-left:.3rem}
+
+/* Diálogos */
+dialog{border:0;padding:0;color:var(--ink);background:var(--surface);max-width:100%}
+dialog::backdrop{background:rgba(23,12,28,.5);backdrop-filter:blur(3px)}
+.x{position:absolute;top:.8rem;right:.8rem;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;z-index:2}
+.x svg{width:16px;height:16px}
+
+#product{width:min(920px,calc(100% - 32px));border-radius:28px;overflow:hidden}
+#product[open]{display:grid;grid-template-columns:1fr 1fr}
+#product .p-media{background:var(--surface-2);min-height:100%}
+#product .p-media img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:4/5;max-width:100%}
+#product .p-body{padding:2.4rem 2.2rem;display:grid;gap:1rem;align-content:start;min-width:0}
+#product h3{font-family:var(--f-serif);font-size:2rem;line-height:1.1}
+#product .p-desc{color:var(--ink-soft)}
+#product .p-price{font-size:1.5rem}
+.p-list{list-style:none;margin:0;padding:0;display:grid}
+.p-list li{display:flex;gap:.7rem;align-items:baseline;padding-block:.55rem;border-top:1px solid var(--line);font-size:.95rem}
+.p-list li:last-child{border-bottom:1px solid var(--line)}
+.p-list li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--rose);flex:none;transform:translateY(-2px)}
+.p-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.p-tags span{font-size:.74rem;padding:.3rem .7rem;border-radius:999px;background:var(--surface-2);color:var(--violet-deep)}
+.p-buy{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin-top:.4rem}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px}
+.qty button{width:38px;height:38px;border:0;background:none;cursor:pointer;font-size:1.1rem;border-radius:50%}
+.qty button:hover{color:var(--violet)}
+.qty output{min-width:1.8rem;text-align:center;font-variant-numeric:tabular-nums}
+
+#cart{margin:0 0 0 auto;height:100%;max-height:100%;height:100dvh;max-height:100dvh;width:min(440px,100%);border-radius:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+#cart[open]{display:grid;grid-template-rows:auto 1fr auto;animation:slide .3s ease}
+@keyframes slide{from{transform:translateX(30px);opacity:0}}
+.c-head{padding:1.4rem 1.5rem 1rem;border-bottom:1px solid var(--line)}
+.c-head h3{font-family:var(--f-serif);font-size:1.8rem}
+.c-items{overflow:auto;padding:.5rem 1.5rem;list-style:none;margin:0}
+.c-items li{display:grid;grid-template-columns:64px 1fr auto;gap:.9rem;align-items:center;padding-block:.9rem;border-bottom:1px solid var(--line)}
+.c-items img{width:64px;height:80px;object-fit:cover;border-radius:12px}
+.c-items b{font-weight:400;display:block;line-height:1.3}
+.c-items small{display:block;color:var(--ink-soft)}
+.c-items .qty button{width:30px;height:30px;font-size:1rem}
+.c-items .line-total{text-align:right;display:grid;gap:.3rem;justify-items:end}
+.rm{background:none;border:0;color:var(--ink-soft);font-size:.74rem;text-decoration:underline;cursor:pointer;padding:0}
+.c-empty{padding:3rem 1.5rem;text-align:center;color:var(--ink-soft);display:grid;gap:1rem;justify-items:center}
+.c-empty svg{width:42px;height:42px;color:var(--rose)}
+.c-foot{padding:1.2rem 1.5rem 1.5rem;border-top:1px solid var(--line);display:grid;gap:.8rem;background:var(--bg)}
+.c-total{display:flex;justify-content:space-between;align-items:baseline;font-size:1.05rem}
+.c-total .price{font-size:1.45rem}
+.c-foot small{color:var(--ink-soft);font-size:.8rem;line-height:1.4}
+.c-foot .btn{width:100%}
+
+button,.btn,a{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+dialog.fallback{position:fixed;inset:0;z-index:30}
+#product.fallback{margin:auto;max-height:calc(100% - 32px);overflow:auto}
+#cart.fallback{left:auto}
+.dlg-backdrop{position:fixed;inset:0;z-index:29;background:rgba(23,12,28,.5)}
+.toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:.75rem 1.2rem;border-radius:999px;font-size:.88rem;opacity:0;pointer-events:none;transition:.3s;z-index:20;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Responsive */
+@media (max-width:1000px){ .products{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:900px){
+  nav{display:none}
+  .hero .wrap{grid-template-columns:1fr;text-align:center;padding-block:2.2rem 3rem;gap:1.8rem}
+  .seal{order:-1;width:min(300px,82%)}
+  .hero .lead{margin-inline:auto}
+  .hero .ctas,.perks{justify-content:center}
+  .contact .wrap{grid-template-columns:1fr;gap:2rem}
+  #product[open]{grid-template-columns:1fr;max-height:calc(100% - 32px);overflow:auto}
+  #product .p-media img{aspect-ratio:1}
+}
+@media (max-width:700px){ .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem .8rem} }
+@media (max-width:640px){
+  section.block{padding-block:3.2rem}
+  .steps{grid-template-columns:1fr}
+  .card .media{border-radius:16px}
+  .card h3{font-size:1.12rem}
+  .card .short{display:none}
+  .card .buy{flex-direction:column;align-items:stretch;gap:.5rem}
+  .add{justify-content:center}
+  .contact-list div{grid-template-columns:1fr auto;gap:.2rem 1rem}
+  .contact-list dt{grid-column:1 / -1}
+  .cart-btn .lbl{display:none}
+  .brand-name{font-size:1rem}
+  #product .p-body{padding:1.6rem 1.3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .seal .spin,#cart[open],.cart-btn.bump{animation:none}
+  .btn,.card .media img,.toast{transition:none}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="lotus" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M16 5c3 4 3 10 0 15-3-5-3-11 0-15Z"/><path d="M16 20c-2-5-6-8-11-8 0 5 4 8 11 8Z"/><path d="M16 20c2-5 6-8 11-8 0 5-4 8-11 8Z"/></g><circle cx="16" cy="25.5" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></g><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="wa" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 20l1.2-4A8 8 0 1 1 8.3 19L4 20Z"/><path fill="currentColor" d="M9.2 8.3c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .5.4l.7 1.6c.1.2 0 .4-.1.6l-.5.6c.6 1.2 1.6 2.1 2.8 2.7l.6-.6c.2-.2.4-.2.6-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.2.6-.5.8-.6.4-1.5.6-2.4.3-2.5-.8-4.4-2.7-5.2-5.1-.2-.9 0-1.9.4-2.5Z"/></symbol>
+    <symbol id="bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></g></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="truck" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></g></symbol>
+    <symbol id="leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 11 5 20 4c0 9-5 15-14 15M5 19l7-7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="MAVE Mujer, inicio">
+      <img src="img/logo.webp" alt="">
+      <span class="brand-name">MAVE<em>Mujer</em></span>
+    </a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#tienda">Tienda</a></li>
+        <li><a href="#como-comprar">Cómo comprar</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+    <button class="cart-btn" id="open-cart" type="button" aria-label="Abrir carrito"><svg><use href="#bag"/></svg><span class="lbl">Carrito</span><span class="cart-count" id="cart-count">0</span></button>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Tienda de cuidado capilar y corporal</p>
+        <h1>Productos que cuidan tu cabello
+          <span class="script">y realzan tu belleza</span></h1>
+        <p class="lead">Elegimos las mejores líneas de shampoo, acondicionadores, tratamientos y cuidado corporal. Arma tu pedido aquí y te lo confirmamos por WhatsApp.</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#tienda"><svg><use href="#bag"/></svg>Ver productos</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/mave_mujer/" target="_blank" rel="noopener"><svg><use href="#ig"/></svg>@mave_mujer</a>
+        </div>
+        <ul class="perks">
+          <li><svg><use href="#wa"/></svg>Pedido fácil por WhatsApp</li>
+          <li><svg><use href="#leaf"/></svg>Fórmulas sin sal ni parabenos</li>
+          <li><svg><use href="#truck"/></svg>Envíos en Colombia</li>
+        </ul>
+      </div>
+      <div class="seal">
+        <svg class="rings" viewBox="0 0 400 400" aria-hidden="true">
+          <g class="spin" fill="none" stroke="currentColor">
+            <circle cx="200" cy="200" r="196" stroke-width=".8" stroke-dasharray="2 7" opacity=".7"/>
+            <path d="M200 14 A186 186 0 0 1 386 200" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M200 386 A186 186 0 0 1 14 200" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="200" cy="14" r="3.5" fill="currentColor" stroke="none"/>
+            <circle cx="200" cy="386" r="3.5" fill="currentColor" stroke="none"/>
+          </g>
+        </svg>
+        <img src="img/logo.webp" alt="Logo de MAVE Mujer: silueta de mujer con cabello violeta, sérum, brocha y labial">
+      </div>
+    </div>
+  </section>
+
+  <div class="brands" aria-label="Marcas disponibles">
+    <div class="wrap">
+      <b>Marcas</b>
+      <span>DUVESHI</span><span>LLUVIA DE ESTRELLAS</span><span>LEHIT</span><span>L'AMOUR</span><span>LECHE PAL PELO</span><span>TRULY</span>
+    </div>
+  </div>
+
+  <section class="block" id="tienda">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Tienda</p>
+        <h2>Encuentra tu <em>rutina ideal</em></h2>
+        <p>Toca un producto para ver qué incluye y sus ingredientes.</p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filtrar por categoría"></div>
+      <div class="products" id="products"></div>
+    </div>
+  </section>
+
+  <section class="block" id="como-comprar" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Cómo comprar</p>
+        <h2>Tu pedido en <em>tres pasos</em></h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Arma tu carrito</h3><p>Agrega los productos que quieras y ajusta las cantidades.</p></li>
+        <li><h3>Envía el pedido</h3><p>Con un toque se abre WhatsApp con tu pedido ya escrito.</p></li>
+        <li><h3>Confirma y recibe</h3><p>Te confirmamos disponibilidad, forma de pago y envío.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block contact" id="contacto">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Contacto</p>
+        <h2>¿Dudas sobre tu cabello? <em>Te asesoramos</em></h2>
+        <p class="lead">Cuéntanos cómo es tu cabello y te recomendamos la línea que mejor te funciona.</p>
+      </div>
+      <dl class="contact-list">
+        <div><dt>WhatsApp</dt><dd><a id="c-wa" href="https://wa.me/573122580334?text=Hola%20MAVE%20Mujer%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20productos" target="_blank" rel="noopener">+57 312 258 0334</a></dd><a class="link-btn" href="https://wa.me/573122580334?text=Hola%20MAVE%20Mujer%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20productos" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Abrir chat</a></div>
+        <div><dt>Instagram</dt><dd><a id="c-ig" href="https://www.instagram.com/mave_mujer/" target="_blank" rel="noopener">@mave_mujer</a></dd><a class="link-btn" href="https://www.instagram.com/mave_mujer/" target="_blank" rel="noopener"><svg><use href="#ig"/></svg>Ver perfil</a></div>
+        <div><dt>Pagos</dt><dd>Transferencia, Nequi o contraentrega</dd><span></span></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg width="26" height="26" style="color:var(--rose)" aria-hidden="true"><use href="#lotus"/></svg>
+    <p class="mark">MAVE<em>Mujer</em></p>
+    <p>Maquillaje &amp; cuidado capilar · Emprendimiento colombiano · © 2026</p>
+  </div>
+</footer>
+
+<dialog id="product" aria-labelledby="p-name">
+  <button class="x" type="button" data-close aria-label="Cerrar"><svg><use href="#close"/></svg></button>
+  <div class="p-media"><img id="p-img" src="" alt=""></div>
+  <div class="p-body">
+    <p class="eyebrow" id="p-brand"></p>
+    <h3 id="p-name"></h3>
+    <p class="price p-price" id="p-price"></p>
+    <p class="p-desc" id="p-desc"></p>
+    <div class="p-tags" id="p-tags"></div>
+    <div><p class="eyebrow" style="margin-bottom:.4rem">Incluye</p><ul class="p-list" id="p-list"></ul></div>
+    <div class="p-buy">
+      <div class="qty"><button type="button" id="p-minus" aria-label="Quitar uno">−</button><output id="p-qty">1</output><button type="button" id="p-plus" aria-label="Agregar uno">+</button></div>
+      <button class="btn btn-primary" type="button" id="p-add"><svg><use href="#bag"/></svg>Agregar al carrito</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="cart" aria-labelledby="c-title">
+  <div class="c-head"><h3 id="c-title">Tu carrito</h3><button class="x" type="button" data-close aria-label="Cerrar carrito"><svg><use href="#close"/></svg></button></div>
+  <ul class="c-items" id="c-items"></ul>
+  <div class="c-foot">
+    <div class="c-total"><span>Total</span><span class="price" id="c-total">$0</span></div>
+    <small>El costo de envío se confirma por WhatsApp según tu ciudad.</small>
+    <a class="btn btn-primary" id="c-send" href="#" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar pedido por WhatsApp</a>
+    <a class="btn btn-ghost" id="c-ig-order" href="https://ig.me/m/mave_mujer" target="_blank" rel="noopener"><svg><use href="#ig"/></svg>Pedir por Instagram</a>
+  </div>
+</dialog>
+
+<a class="wa-float" href="https://wa.me/573122580334?text=Hola%20MAVE%20Mujer%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20productos" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg><use href="#wa"/></svg></a>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+const WA_NUMBER = '573122580334';
+const CATS = [
+  {id:'all', label:'Todos'},
+  {id:'shampoo', label:'Shampoo'},
+  {id:'tratamiento', label:'Acondicionadores y tratamientos'},
+  {id:'reparacion', label:'Reparadores y termoprotectores'},
+  {id:'accesorios', label:'Accesorios'},
+  {id:'cuerpo', label:'Cuidado corporal'}
+];
+const PRODUCTS = [
+  {id:'duveshi-shampoo', cat:'shampoo', brand:'Duveshi', name:'Shampoo Romero y Jengibre', price:42000, size:'500 ml', img:'duveshi-shampoo',
+   short:'Cabello fuerte y saludable de forma natural.',
+   desc:'Con extractos de aloe vera, romero, ortiga, jengibre y cebolla, más vitaminas B5 y biotina. Fórmula segura sin sulfatos, parabenos ni sal.',
+   tags:['Sin sulfatos','Sin parabenos','Sin sal'], items:['Shampoo capilar romero y jengibre 500 ml']},
+  {id:'duveshi-frutal', cat:'tratamiento', brand:'Duveshi', name:'Tratamiento Nutritivo Frutal', price:45000, size:'500 ml', img:'duveshi-frutal',
+   short:'Crecimiento, suavidad y brillo.',
+   desc:'Tratamiento capilar nutritivo con extractos frutales y aceites esenciales. Libre de siliconas, sulfatos, parabenos y sal.',
+   tags:['Sin siliconas','Sin sulfatos','Sin sal'], items:['Tratamiento capilar nutritivo frutal 500 ml']},
+  {id:'duveshi-oro', cat:'reparacion', brand:'Duveshi', name:'Oro Líquido Reparador', price:50000, size:'50 ml', img:'duveshi-oro',
+   short:'Repara tus puntas y devuelve el brillo natural.',
+   desc:'Repara las puntas, nutre y fortalece. Deja el cabello más suave y brillante. Libre de parabenos, orgánico y libre de crueldad animal.',
+   tags:['Repara puntas','Orgánico','Cruelty free'], items:['Oro Líquido reparador capilar 50 ml']},
+  {id:'choco-shampoo', cat:'shampoo', brand:'Lluvia de Estrellas', name:'Shampoo Chocolate Rosado', price:39000, size:'400 ml', img:'choco-shampoo',
+   short:'Ultra nutritivo y reparador.',
+   desc:'Extractos de cacao, papaya, romero y ácido hialurónico. Sin sal ni parabenos. Ideal para todo tipo de cabello.',
+   tags:['Sin sal','Sin parabenos','Nutrición'], items:['Shampoo Chocolate Rosado 400 ml']},
+  {id:'choco-acond', cat:'tratamiento', brand:'Lluvia de Estrellas', name:'Acondicionador Chocolate Rosado', price:38000, size:'400 ml', img:'choco-acond',
+   short:'Suavidad, reparación y nutrición extrema.',
+   desc:'Extractos de cacao, romero y papaya con aceite de argán. Sin sal ni parabenos.',
+   tags:['Argán','Reparación','Sin sal'], items:['Acondicionador Chocolate Rosado 400 ml']},
+  {id:'miel-shampoo', cat:'shampoo', brand:'Lluvia de Estrellas', name:'Shampoo Miel Rosada', price:37000, size:'400 ml', img:'miel-shampoo',
+   short:'Hidratación, brillo y suavidad.',
+   desc:'Extractos de miel, aloe vera, romero y papaya. Sin sal ni parabenos. Ideal para todo tipo de cabello.',
+   tags:['Hidratación','Brillo','Sin sal'], items:['Shampoo Miel Rosada 400 ml']},
+  {id:'miel-acond', cat:'tratamiento', brand:'Lluvia de Estrellas', name:'Acondicionador Miel Rosada', price:37500, size:'400 ml', img:'miel-acond',
+   short:'Brillo extremo y nutrición real.',
+   desc:'Extractos de miel, romero y aloe vera, con aceite de argán y vitamina E.',
+   tags:['Brillo','Argán','Vitamina E'], items:['Acondicionador Miel Rosada 400 ml']},
+  {id:'lamour-polimero', cat:'tratamiento', brand:"L'amour", name:'Polímero Tratamiento Capilar', price:44000, size:'', img:'lamour-polimero',
+   short:'Tratamiento capilar para suavidad y brillo.',
+   desc:"Tratamiento capilar Polímero de L'amour para un cabello más suave, manejable y con brillo.",
+   tags:['Tratamiento','Brillo'], items:['Polímero tratamiento capilar']},
+  {id:'lehit-cebolla-sh', cat:'shampoo', brand:'Lehit', name:'Shampoo Cebolla y Jengibre', price:25000, size:'300 g', img:'lehit-cebolla-sh',
+   short:'Sin sal. Humectación y brillo.',
+   desc:'Shampoo sin sal con cebolla y jengibre. Humectación y brillo, sin olor a cebolla y con una fragancia sofisticada. Libre de parabenos.',
+   tags:['Sin sal','Sin parabenos','Sin olor a cebolla'], items:['Shampoo sin sal con cebolla y jengibre 300 g']},
+  {id:'lehit-cebolla-trat', cat:'tratamiento', brand:'Lehit', name:'Tratamiento Cebolla y Jengibre', price:25000, size:'300 g', img:'lehit-cebolla-trat',
+   short:'Hidratación y brillo, sin olor a cebolla.',
+   desc:'Tratamiento acondicionador capilar con cebolla y jengibre. Hidratación y brillo con fragancia sofisticada. Sin sal, sin parabenos y sin sulfatos.',
+   tags:['Sin sal','Sin sulfatos','Sin parabenos'], items:['Tratamiento acondicionador capilar con cebolla y jengibre 300 g']},
+  {id:'lehit-seda-sh', cat:'shampoo', brand:'Lehit', name:'Shampoo Gusano de Seda', price:25000, size:'300 g', img:'lehit-seda-sh',
+   short:'Control del frizz, sedosidad y brillo.',
+   desc:'Shampoo sin sal con capullo de gusano de seda y vitamina E. Controla el frizz y deja el cabello sedoso y brillante. Sin parabenos ni sulfatos.',
+   tags:['Sin sal','Anti frizz','Vitamina E'], items:['Shampoo sin sal con capullo de gusano de seda 300 g']},
+  {id:'lehit-seda-trat', cat:'tratamiento', brand:'Lehit', name:'Tratamiento Gusano de Seda', price:25000, size:'300 g', img:'lehit-seda-trat',
+   short:'Sedosidad y brillo con vitamina E.',
+   desc:'Tratamiento acondicionador con capullo de gusano de seda y vitamina E. Control del frizz, sedosidad y brillo. Sin sal, sin parabenos y sin sulfatos.',
+   tags:['Anti frizz','Sin sal','Sin sulfatos'], items:['Tratamiento acondicionador con capullo de gusano de seda 300 g']},
+  {id:'lpp-shampoo', cat:'shampoo', brand:'Leche Pal Pelo', name:'Shampoo Tradicional', price:35000, size:'440 ml', img:'lpp-shampoo',
+   short:'El clásico de Leche Pal Pelo.',
+   desc:'Shampoo de la línea Tradicional de Leche Pal Pelo para el lavado de todos los días.',
+   tags:['Línea Tradicional'], items:['Shampoo Tradicional 440 ml']},
+  {id:'lpp-termo', cat:'reparacion', brand:'Leche Pal Pelo', name:'Termoprotector Líquido', price:30000, size:'250 ml', img:'lpp-termo',
+   short:'Protege tu cabello del calor.',
+   desc:'Termoprotector líquido en spray de la línea Tradicional. Aplícalo antes del secador o la plancha para proteger el cabello del calor.',
+   tags:['Termoprotección','Spray'], items:['Termoprotector líquido 250 ml']},
+  {id:'lamour-medias', cat:'accesorios', brand:"L'amour", name:'Medias para el Cabello', price:41000, size:'', badge:'Ondas sin calor', img:'lamour-medias',
+   short:'Para hacer ondas sin calor.',
+   desc:'Medias para hacer ondas sin calor. Las colocas con el cabello húmedo, duermes con ellas y al día siguiente tienes ondas definidas sin dañar tu cabello.',
+   tags:['Sin calor','Ondas','Reutilizables'], items:['Medias para el cabello']},
+  {id:'masmelo', cat:'cuerpo', brand:'Truly', name:'Aceite After Shave Masmelo', price:33000, size:'50 ml', img:'masmelo',
+   short:'Calma, nutre y perfuma tu piel.',
+   desc:'Aceite after shave con vainilla, fresa, péptidos, vitamina F y ácido hialurónico. Hidrata, nutre y calma, y deja la piel suave y perfumada. Vegano.',
+   tags:['Vegano','Calmante','Aroma a masmelo'], items:['Aceite after shave Masmelo 50 ml']}
+];
+function openDlg(d){
+  if(typeof d.showModal === 'function'){ try { d.showModal(); return; } catch(e){} }
+  d.setAttribute('open',''); d.classList.add('fallback');
+  const bd = document.createElement('div'); bd.className = 'dlg-backdrop'; bd.onclick = () => closeDlg(d);
+  d.before(bd); d._bd = bd;
+}
+function closeDlg(d){
+  if(typeof d.close === 'function' && !d.classList.contains('fallback')){ d.close(); return; }
+  d.removeAttribute('open'); d.classList.remove('fallback'); if(d._bd){ d._bd.remove(); d._bd = null; }
+}
+const byId = Object.fromEntries(PRODUCTS.map(p=>[p.id,p]));
+const fmt = n => '$' + n.toLocaleString('es-CO');
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+
+// Carrito
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem('mave-cart') || '{}') || {}; } catch(e) { cart = {}; }
+Object.keys(cart).forEach(k => { if(!byId[k] || !(cart[k] > 0)) delete cart[k]; });
+function save(){ try { localStorage.setItem('mave-cart', JSON.stringify(cart)); } catch(e){} }
+
+// Filtros
+let current = 'all';
+const filters = $('#filters');
+filters.innerHTML = CATS.map(c => `<button class="chip" type="button" data-cat="${c.id}" aria-pressed="${c.id===current}">${c.label}</button>`).join('');
+filters.addEventListener('click', e => {
+  const b = e.target.closest('[data-cat]'); if(!b) return;
+  current = b.dataset.cat;
+  filters.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+  renderProducts();
+});
+
+function renderProducts(){
+  const list = PRODUCTS.filter(p => current === 'all' || p.cat === current);
+  $('#products').innerHTML = list.map(p => `
+    <article class="card">
+      <button class="media" type="button" data-open="${p.id}" aria-label="Ver ${esc(p.name)}">
+        <img src="img/${p.img}.webp" alt="${esc(p.brand)} ${esc(p.name)}" loading="lazy">
+        ${p.badge ? `<span class="badge new">${p.badge}</span>` : (p.size ? `<span class="badge">${p.size}</span>` : '')}
+      </button>
+      <div class="info">
+        <p class="brand-tag">${esc(p.brand)}</p>
+        <h3><button type="button" data-open="${p.id}">${esc(p.name)}</button></h3>
+        <p class="short">${esc(p.short)}</p>
+        <div class="buy">
+          <span class="price">${fmt(p.price)}</span>
+          <button class="add" type="button" data-add="${p.id}"><svg><use href="#plus"/></svg>Agregar</button>
+        </div>
+      </div>
+    </article>`).join('') || '<p class="empty-filter">No hay productos en esta categoría.</p>';
+}
+$('#products').addEventListener('click', e => {
+  const o = e.target.closest('[data-open]'); if(o) return openProduct(o.dataset.open);
+  const a = e.target.closest('[data-add]');
+  if(a){ add(a.dataset.add, 1); a.classList.add('done'); a.innerHTML = '<svg><use href="#check"/></svg>Listo'; setTimeout(()=>{ a.classList.remove('done'); a.innerHTML = '<svg><use href="#plus"/></svg>Agregar'; }, 1400); }
+});
+
+// Detalle de producto
+const dlgP = $('#product'); let pid = null, pq = 1;
+function openProduct(id){
+  const p = byId[id]; pid = id; pq = 1;
+  $('#p-img').src = `img/${p.img}.webp`; $('#p-img').alt = p.brand + ' ' + p.name;
+  $('#p-brand').textContent = p.brand; $('#p-name').textContent = p.name;
+  $('#p-price').textContent = fmt(p.price); $('#p-desc').textContent = p.desc;
+  $('#p-tags').innerHTML = p.tags.map(t => `<span>${esc(t)}</span>`).join('');
+  $('#p-list').innerHTML = p.items.map(t => `<li>${esc(t)}</li>`).join('');
+  $('#p-qty').textContent = pq;
+  openDlg(dlgP);
+}
+$('#p-minus').onclick = () => { pq = Math.max(1, pq-1); $('#p-qty').textContent = pq; };
+$('#p-plus').onclick = () => { pq = Math.min(20, pq+1); $('#p-qty').textContent = pq; };
+$('#p-add').onclick = () => { add(pid, pq); closeDlg(dlgP); };
+
+// Lógica del carrito
+const dlgC = $('#cart');
+function add(id, n){
+  cart[id] = Math.min(20, (cart[id] || 0) + n); save(); renderCart();
+  toast(`${byId[id].name} agregado al carrito`);
+  const b = $('#open-cart'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+}
+function setQty(id, n){ if(n <= 0) delete cart[id]; else cart[id] = Math.min(20, n); save(); renderCart(); }
+function message(){
+  const lines = Object.entries(cart).map(([id,q]) => `• ${q} x ${byId[id].brand} ${byId[id].name} (${fmt(byId[id].price*q)})`);
+  return `Hola MAVE Mujer, quiero hacer este pedido:\n${lines.join('\n')}\nTotal: ${fmt(total())}\n¿Me confirman envío y forma de pago?`;
+}
+function total(){ return Object.entries(cart).reduce((s,[id,q]) => s + byId[id].price*q, 0); }
+function renderCart(){
+  const entries = Object.entries(cart);
+  const count = entries.reduce((s,[,q]) => s+q, 0);
+  $('#cart-count').textContent = count;
+  $('#open-cart').setAttribute('aria-label', `Abrir carrito, ${count} productos`);
+  $('#c-items').innerHTML = entries.length ? entries.map(([id,q]) => { const p = byId[id]; return `
+    <li>
+      <img src="img/${p.img}.webp" alt="">
+      <div><b>${esc(p.name)}</b><small>${esc(p.brand)}</small>
+        <div class="qty" style="margin-top:.4rem"><button type="button" data-q="${id}" data-d="-1" aria-label="Quitar uno">−</button><output>${q}</output><button type="button" data-q="${id}" data-d="1" aria-label="Agregar uno">+</button></div>
+      </div>
+      <div class="line-total"><span class="price">${fmt(p.price*q)}</span><button class="rm" type="button" data-rm="${id}">Quitar</button></div>
+    </li>`; }).join('')
+    : `<li class="c-empty" style="display:grid;border:0"><svg><use href="#bag"/></svg><p>Tu carrito está vacío.<br>Agrega productos desde la tienda.</p></li>`;
+  $('#c-total').textContent = fmt(total());
+  const send = $('#c-send');
+  if(entries.length){ send.removeAttribute('aria-disabled'); send.href = waUrl(); }
+  else { send.setAttribute('aria-disabled','true'); send.href = '#'; }
+  send.toggleAttribute('disabled', !entries.length);
+}
+$('#c-items').addEventListener('click', e => {
+  const q = e.target.closest('[data-q]'); if(q) return setQty(q.dataset.q, (cart[q.dataset.q]||0) + Number(q.dataset.d));
+  const r = e.target.closest('[data-rm]'); if(r) setQty(r.dataset.rm, 0);
+});
+function waUrl(){ return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message())}`; }
+// El enlace abre el chat de WhatsApp con el pedido ya escrito; solo se frena si el carrito está vacío
+$('#c-send').addEventListener('click', e => {
+  if(!Object.keys(cart).length){ e.preventDefault(); toast('Agrega productos al carrito primero.'); return; }
+  e.currentTarget.href = waUrl();
+});
+$('#open-cart').onclick = () => openDlg(dlgC);
+
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeDlg(b.closest('dialog'))));
+document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if(e.target === d) closeDlg(d); }));
+
+// Utilidades
+let tt;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2200); }
+
+renderProducts(); renderCart();
+})();
+</script>
