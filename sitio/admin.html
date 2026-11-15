@@ -176,12 +176,49 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
 .sd-num{text-align:center;min-width:110px}
 .sd-num b{display:block;font-family:var(--f-serif);font-weight:500;font-size:3.2rem;line-height:1;font-variant-numeric:tabular-nums}
 .sd-num small{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.sd-form{display:grid;gap:.6rem;border:1px solid var(--line);border-radius:16px;padding:.9rem}
+.sd-form .lbl{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.sd-form .btn{justify-self:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem}
+@media (max-width:480px){ .grid3{grid-template-columns:1fr 1fr} }
 .sd-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem;align-items:end}
 .history{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;font-size:.9rem}
 .history li{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;padding:.45rem 0;border-bottom:1px solid var(--line)}
 .history .d{font-variant-numeric:tabular-nums;font-weight:500;min-width:2.6rem}
 .history .d.up{color:var(--ok)} .history .d.down{color:var(--danger)}
 .history time{color:var(--ink-soft);font-size:.8rem}
+/* Pestañas y canal de venta */
+.tabs{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:4px;gap:2px;margin:0 0 1rem}
+.tabs button{border:0;background:transparent;border-radius:999px;padding:.55rem 1.1rem;min-height:40px;cursor:pointer;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.channel{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:0 0 1rem;font-size:.85rem;color:var(--ink-soft)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:.45rem .95rem;min-height:38px;cursor:pointer;font-size:.82rem;color:var(--ink-soft)}
+.seg button[aria-pressed="true"]{background:var(--violet);color:var(--on-accent)}
+/* Resumen */
+.rp-tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:end;margin-bottom:1rem}
+.rp-tools .field{min-width:150px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.7rem;margin-bottom:1.2rem}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:.9rem 1rem;display:grid;gap:.2rem;min-width:0}
+.tile small{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.tile b{font-family:var(--f-serif);font-weight:500;font-size:1.75rem;line-height:1.1;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tile span{font-size:.82rem;color:var(--ink-soft)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1rem;margin-bottom:1rem;min-width:0}
+.card h2{font-family:var(--f-serif);font-weight:500;font-size:1.35rem;margin:0 0 .6rem}
+.chart{display:flex;align-items:flex-end;gap:2px;height:150px;padding-top:.4rem;border-bottom:1px solid var(--line);overflow-x:auto}
+.chart .bar{flex:1 0 10px;max-width:42px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative;cursor:default}
+.chart .bar i{display:block;background:var(--violet);border-radius:4px 4px 0 0;min-height:0}
+.chart .bar:hover i,.chart .bar:focus i{background:var(--violet-deep)}
+.chart .bar:focus{outline:2px solid var(--violet);outline-offset:2px}
+.chart-x{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink-soft);margin-top:.3rem}
+.chart-tip{position:fixed;z-index:45;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.8rem;padding:.4rem .65rem;border-radius:10px;white-space:nowrap}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th{font-weight:400;text-align:left;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);padding:.4rem .5rem;border-bottom:1px solid var(--line)}
+.tbl td{padding:.5rem;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tbl td.n,.tbl th.n{text-align:right;white-space:nowrap}
+@media (max-width:520px){ .tbl .opt{display:none} }
+.rp-note{font-size:.85rem;color:var(--ink-soft);margin:.2rem 0 1rem}
 #labels{display:none}
 @media print{
   body>*:not(#labels){display:none!important}
@@ -265,10 +302,22 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
   <!-- Panel -->
   <section id="app" hidden>
     <div class="top">
-      <div><h1>Productos</h1><p class="muted" id="who" style="margin:.2rem 0 0;font-size:.9rem"></p></div>
+      <div><h1 id="app-title">Productos</h1><p class="muted" id="who" style="margin:.2rem 0 0;font-size:.9rem"></p></div>
       <div class="btns" style="flex-wrap:wrap">
         <button class="btn btn-ghost" type="button" id="labels-btn"><svg><use href="#i-qr"/></svg>Etiquetas QR</button>
         <button class="btn btn-primary" type="button" id="add-btn"><svg><use href="#i-plus"/></svg>Agregar producto</button>
+      </div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Secciones del panel">
+      <button type="button" role="tab" id="tab-p" aria-selected="true" aria-controls="sec-products">Productos</button>
+      <button type="button" role="tab" id="tab-r" aria-selected="false" aria-controls="sec-report">Resumen</button>
+    </div>
+    <div id="sec-products" role="tabpanel" aria-labelledby="tab-p">
+    <div class="channel">
+      <span>Cuando toco <b>−</b> es una venta en:</span>
+      <div class="seg" role="group" aria-label="Canal de venta">
+        <button type="button" data-ch="fisica" aria-pressed="true">Local</button>
+        <button type="button" data-ch="online" aria-pressed="false">Online / WhatsApp</button>
       </div>
     </div>
     <div class="tools">
@@ -291,6 +340,39 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
     </div>
     <p class="count" id="count"></p>
     <ul class="list" id="list"></ul>
+    </div>
+
+    <div id="sec-report" role="tabpanel" aria-labelledby="tab-r" hidden>
+      <div class="rp-tools">
+        <div class="field"><label for="rp-period">Periodo</label>
+          <select id="rp-period">
+            <option value="today">Hoy</option>
+            <option value="7d">Últimos 7 días</option>
+            <option value="month" selected>Este mes</option>
+            <option value="prev">Mes pasado</option>
+            <option value="custom">Elegir fechas…</option>
+          </select>
+        </div>
+        <div class="field" id="rp-from-f" hidden><label for="rp-from">Desde</label><input id="rp-from" type="date"></div>
+        <div class="field" id="rp-to-f" hidden><label for="rp-to">Hasta</label><input id="rp-to" type="date"></div>
+        <button class="btn btn-primary" type="button" id="rp-xlsx">Descargar Excel</button>
+      </div>
+      <p class="rp-note" id="rp-range"></p>
+      <div class="tiles" id="rp-tiles"></div>
+      <div class="card">
+        <h2>Vendido por día</h2>
+        <div class="chart" id="rp-chart" role="img"></div>
+        <div class="chart-x" id="rp-chart-x"></div>
+      </div>
+      <div class="card">
+        <h2>Lo que más se vende</h2>
+        <div class="tbl-wrap"><table class="tbl" id="rp-top"></table></div>
+      </div>
+      <div class="card">
+        <h2>Inventario hoy</h2>
+        <div class="tbl-wrap"><table class="tbl" id="rp-stock"></table></div>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -330,6 +412,10 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
       <div class="grid2">
         <div class="field"><label for="ed-badge">Etiqueta destacada</label><input id="ed-badge" type="text" maxlength="24" placeholder="Ej.: Nuevo"><span class="hint">Opcional. Reemplaza al tamaño en la esquina de la foto.</span></div>
         <div class="field"><label for="ed-order">Orden en la tienda</label><input id="ed-order" type="number" inputmode="numeric" step="1"><span class="hint">Número menor = aparece antes.</span></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="ed-cost">Costo (lo que te cuesta c/u)</label><input id="ed-cost" type="text" inputmode="numeric" autocomplete="off" placeholder="Opcional. Ej.: 25000"><span class="hint">No se ve en la tienda. Sirve para calcular la ganancia.</span></div>
+        <div></div>
       </div>
       <div class="grid2">
         <div class="field"><label for="ed-stock">Unidades en stock</label><input id="ed-stock" type="number" inputmode="numeric" min="0" step="1" placeholder="Ej.: 12"><span class="hint">Déjalo vacío si aún no las has contado. En 0 sale “Agotado” solo.</span></div>
@@ -372,9 +458,22 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
       <button class="qty-btn" type="button" id="sd-inc" aria-label="Sumar una unidad">+</button>
     </div>
     <p class="hint" id="sd-state" style="text-align:center;margin:-.4rem 0 0"></p>
-    <form class="sd-row" id="sd-in-form">
-      <div class="field"><label for="sd-in">Llegó mercancía: ¿cuántas unidades?</label><input id="sd-in" type="number" inputmode="numeric" min="1" step="1" placeholder="Ej.: 6"></div>
-      <button class="btn btn-primary" type="submit">Sumar</button>
+    <form class="sd-form" id="sd-sale-form">
+      <span class="lbl">Vendí</span>
+      <div class="grid3">
+        <div class="field"><label for="sd-sale-n">Unidades</label><input id="sd-sale-n" type="number" inputmode="numeric" min="1" step="1" value="1"></div>
+        <div class="field"><label for="sd-sale-price">Precio c/u</label><input id="sd-sale-price" type="text" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label for="sd-sale-ch">Dónde</label><select id="sd-sale-ch"><option value="fisica">Local</option><option value="online">Online / WhatsApp</option></select></div>
+      </div>
+      <button class="btn btn-primary" type="submit">Registrar venta</button>
+    </form>
+    <form class="sd-form" id="sd-in-form">
+      <span class="lbl">Llegó mercancía</span>
+      <div class="grid3">
+        <div class="field"><label for="sd-in">Unidades</label><input id="sd-in" type="number" inputmode="numeric" min="1" step="1" placeholder="Ej.: 6"></div>
+        <div class="field"><label for="sd-in-cost">Pagué c/u</label><input id="sd-in-cost" type="text" inputmode="numeric" autocomplete="off" placeholder="Opcional"></div>
+      </div>
+      <button class="btn btn-ghost" type="submit">Sumar al stock</button>
     </form>
     <form class="sd-row" id="sd-count-form">
       <div class="field"><label for="sd-count">Conté la estantería: hay exactamente</label><input id="sd-count" type="number" inputmode="numeric" min="0" step="1"></div>

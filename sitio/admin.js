@@ -215,8 +215,8 @@
   $('#list').addEventListener('click', e => {
     const row = e.target.closest('[data-id]'); if (!row) return;
     const p = products.find(x => x.id === row.dataset.id); if (!p) return;
-    if (e.target.closest('[data-dec]')) { changeStock(p, -1, null, e.target.closest('[data-dec]')); return; }
-    if (e.target.closest('[data-inc]')) { changeStock(p, 1, null, e.target.closest('[data-inc]')); return; }
+    if (e.target.closest('[data-dec]')) { changeStock(p, -1, { reason: 'salida', channel }, e.target.closest('[data-dec]')); return; }
+    if (e.target.closest('[data-inc]')) { changeStock(p, 1, { reason: 'entrada' }, e.target.closest('[data-inc]')); return; }
     if (e.target.closest('[data-stock]')) { openStock(p); return; }
     if (e.target.closest('[data-edit]')) openEditor(p);
     if (e.target.closest('[data-delete]')) {
@@ -254,13 +254,30 @@
   }
   // Suma o resta unidades. La base de datos hace la cuenta (dos toques seguidos nunca se pisan),
   // anota el movimiento y pone "Agotado" sola al llegar a 0.
-  async function changeStock(p, delta, reason, btn) {
+  // Canal de las ventas hechas con "−" (se recuerda en este dispositivo).
+  const CH_LABEL = { fisica: 'Local', online: 'Online' };
+  let channel = 'fisica';
+  try { if (localStorage.getItem('mave.channel') === 'online') channel = 'online'; } catch (e) { }
+  function paintChannel() { document.querySelectorAll('[data-ch]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.ch === channel))); }
+  document.querySelectorAll('[data-ch]').forEach(b => b.addEventListener('click', () => {
+    channel = b.dataset.ch; paintChannel(); try { localStorage.setItem('mave.channel', channel); } catch (e) { }
+  }));
+  paintChannel();
+
+  // o = { reason, price, cost, channel }: price/cost por unidad solo si son distintos a los del producto.
+  async function changeStock(p, delta, o, btn) {
+    o = o || {};
     if (btn) btn.disabled = true;
-    const { data, error } = await sb.rpc('adjust_stock', { p_id: p.id, p_delta: delta, p_reason: reason });
+    const { data, error } = await sb.rpc('adjust_stock', {
+      p_id: p.id, p_delta: delta, p_reason: o.reason || null,
+      p_unit_price: o.price == null ? null : o.price, p_unit_cost: o.cost == null ? null : o.cost,
+      p_channel: delta < 0 && (o.reason || 'salida') === 'salida' ? (o.channel || channel) : null
+    });
     if (btn) btn.disabled = false;
     if (error || !data) { toast(error ? friendly(error) : 'No se pudo guardar el cambio.', true); return false; }
     const wasAvail = applyRow(p, data);
-    let msg = delta > 0 ? `+${delta} · ${p.name}: ${units(data.stock)}` : `${delta} · ${p.name}: ${units(data.stock)}`;
+    const sale = delta < 0 ? `Venta ${CH_LABEL[o.channel || channel].toLowerCase()} · ` : '';
+    let msg = delta > 0 ? `+${delta} · ${p.name}: ${units(data.stock)}` : `${sale}${p.name}: quedan ${data.stock}`;
     if (data.stock === 0) msg = `${p.name}: se acabó. En la tienda ya sale “Agotado”.`;
     else if (!wasAvail && data.available) msg = `${p.name}: ${units(data.stock)}. Ya se puede comprar otra vez.`;
     else if (isLow(data) && delta < 0) msg += ' · Poco stock';
@@ -287,35 +304,48 @@
     $('#sd-dec').disabled = !c || p.stock === 0;
     $('#sd-min').value = p.min_stock;
     $('#sd-count').placeholder = c ? String(p.stock) : 'Ej.: 10';
+    $('#sd-in-cost').placeholder = p.cost != null ? String(p.cost) : 'Opcional';
     $('#sd-state').textContent = !c ? 'Escribe abajo cuántas unidades hay para empezar a llevar la cuenta.'
       : p.stock === 0 ? 'Agotado en la tienda. Al sumar unidades vuelve a estar disponible.'
       : isLow(p) ? `Poco stock: avisa con ${p.min_stock} o menos.` : (p.available ? 'Disponible en la tienda.' : 'Marcado como agotado a mano.');
   }
-  const REASONS = { entrada: 'Entrada', salida: 'Salida', conteo: 'Conteo', inicial: 'Stock inicial', ajuste: 'Ajuste' };
+  const REASONS = { entrada: 'Entrada', salida: 'Venta', conteo: 'Conteo', inicial: 'Stock inicial', ajuste: 'Ajuste' };
   async function loadHistory(p) {
     const ul = $('#sd-history');
-    const { data, error } = await sb.from('stock_movements').select('delta,stock_after,reason,created_at').eq('product_id', p.id).order('created_at', { ascending: false }).limit(10);
+    const { data, error } = await sb.from('stock_movements').select('delta,stock_after,reason,unit_price,channel,created_at').eq('product_id', p.id).order('created_at', { ascending: false }).limit(10);
     if (stockP !== p) return;
     if (error) { ul.innerHTML = '<li class="muted">No se pudo cargar el historial.</li>'; return; }
     ul.innerHTML = (data || []).length ? data.map(m => {
       const d = new Date(m.created_at);
       const when = d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
-      return `<li><span class="d ${m.delta > 0 ? 'up' : 'down'}">${m.delta > 0 ? '+' : ''}${m.delta}</span><span>${esc(REASONS[m.reason] || m.reason)} · quedan ${m.stock_after}</span><time datetime="${esc(m.created_at)}">${esc(when)}</time></li>`;
+      return `<li><span class="d ${m.delta > 0 ? 'up' : 'down'}">${m.delta > 0 ? '+' : ''}${m.delta}</span><span>${esc(REASONS[m.reason] || m.reason)}${m.reason === 'salida' && m.channel ? ' ' + esc(CH_LABEL[m.channel].toLowerCase()) : ''}${m.reason === 'salida' && m.unit_price != null ? ' · ' + fmt(-m.delta * m.unit_price) : ''} · quedan ${m.stock_after}</span><time datetime="${esc(m.created_at)}">${esc(when)}</time></li>`;
     }).join('') : '<li class="muted">Todavía no hay movimientos.</li>';
   }
   function openStock(p) {
-    stockP = p; $('#sd-in').value = ''; $('#sd-count').value = '';
+    stockP = p; $('#sd-in').value = ''; $('#sd-count').value = ''; $('#sd-in-cost').value = p.cost != null ? String(p.cost) : '';
+    $('#sd-sale-n').value = '1'; $('#sd-sale-price').value = String(p.price); $('#sd-sale-ch').value = channel;
     $('#sd-history').innerHTML = '<li class="muted">Cargando…</li>';
     renderStock(); openDlg($('#stock-dlg')); loadHistory(p);
   }
   $('#stock-dlg').addEventListener('close', () => { stockP = null; });
   $('#stock-dlg').querySelector('[data-close]').addEventListener('click', () => { stockP = null; });
-  $('#sd-dec').addEventListener('click', e => stockP && changeStock(stockP, -1, 'salida', e.currentTarget));
-  $('#sd-inc').addEventListener('click', e => stockP && changeStock(stockP, 1, 'entrada', e.currentTarget));
+  $('#sd-dec').addEventListener('click', e => stockP && changeStock(stockP, -1, { reason: 'salida', channel }, e.currentTarget));
+  $('#sd-inc').addEventListener('click', e => stockP && changeStock(stockP, 1, { reason: 'entrada' }, e.currentTarget));
+  $('#sd-sale-form').addEventListener('submit', async e => {
+    e.preventDefault(); const p = stockP; if (!p) return;
+    const n = parseCount($('#sd-sale-n').value), price = parsePrice($('#sd-sale-price').value);
+    if (!n || isNaN(n)) { toast('Escribe cuántas unidades vendiste.', true); $('#sd-sale-n').focus(); return; }
+    if (isNaN(price)) { toast('Escribe el precio de cada unidad. Ej.: 42000', true); $('#sd-sale-price').focus(); return; }
+    if (await changeStock(p, -n, { reason: 'salida', price: price === p.price ? null : price, channel: $('#sd-sale-ch').value })) {
+      $('#sd-sale-n').value = '1'; $('#sd-sale-price').value = String(p.price);
+    }
+  });
   $('#sd-in-form').addEventListener('submit', async e => {
-    e.preventDefault(); const n = parseCount($('#sd-in').value);
+    e.preventDefault(); const n = parseCount($('#sd-in').value), costTxt = $('#sd-in-cost').value.trim();
+    const cost = costTxt ? parsePrice(costTxt) : null;
     if (!n || isNaN(n)) { toast('Escribe cuántas unidades llegaron. Ej.: 6', true); $('#sd-in').focus(); return; }
-    if (await changeStock(stockP, n, 'entrada')) $('#sd-in').value = '';
+    if (Number.isNaN(cost)) { toast('Escribe lo que pagaste por unidad, solo números.', true); $('#sd-in-cost').focus(); return; }
+    if (await changeStock(stockP, n, { reason: 'entrada', cost })) $('#sd-in').value = '';
   });
   $('#sd-count-form').addEventListener('submit', async e => {
     e.preventDefault(); const n = parseCount($('#sd-count').value);
@@ -431,6 +461,7 @@
     $('#ed-visible').checked = p ? p.visible : true;
     $('#ed-stock').value = p && counted(p) ? String(p.stock) : '';
     $('#ed-min').value = p ? String(p.min_stock) : '3';
+    $('#ed-cost').value = p && p.cost != null ? String(p.cost) : '';
     setPreview(p ? imgSrc(p) : null);
     priceHint();
     openDlg($('#editor'));
@@ -457,6 +488,8 @@
     if (!editing && !photoBlob) { edError('Elige una foto del producto.'); return; }
     const stockIn = parseCount($('#ed-stock').value), minIn = parseCount($('#ed-min').value);
     if (Number.isNaN(stockIn)) { edError('Escribe las unidades en stock solo con números, o déjalo vacío.'); $('#ed-stock').focus(); return; }
+    const costTxt = $('#ed-cost').value.trim(), costIn = costTxt ? parsePrice(costTxt) : null;
+    if (Number.isNaN(costIn)) { edError('Escribe el costo solo con números, o déjalo vacío.'); $('#ed-cost').focus(); return; }
     if (Number.isNaN(minIn)) { edError('Escribe en “Avisar cuando queden” solo números. Ej.: 3'); $('#ed-min').focus(); return; }
     const items = $('#ed-items').value.split('\n').map(s => s.trim()).filter(Boolean);
     const row = {
@@ -469,7 +502,8 @@
       sort_order: parseInt($('#ed-order').value, 10) || 0,
       available: $('#ed-available').checked,
       visible: $('#ed-visible').checked,
-      min_stock: minIn === null ? 3 : minIn
+      min_stock: minIn === null ? 3 : minIn,
+      cost: costIn
     };
     // El stock solo se envía si se cambió aquí, para no pisar ventas hechas mientras el formulario estaba abierto.
     const oldStock = editing && counted(editing) ? editing.stock : null;
@@ -498,6 +532,184 @@
       if (uploaded) await sb.storage.from(BUCKET).remove([uploaded.path]);
       edError(friendly(err));
     } finally { busy(); btn.disabled = false; }
+  });
+
+  // ── Resumen de ventas ────────────────────────────────────
+  // Todo se calcula con el historial de movimientos: "salida" = venta, "entrada" = compra de mercancía.
+  const pad = n => String(n).padStart(2, '0');
+  const dayKey = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const dayLabel = (k, opts) => new Date(k + 'T12:00:00').toLocaleDateString('es-CO', opts || { day: 'numeric', month: 'short' });
+  let report = null;
+
+  function tab(which) {
+    const r = which === 'report';
+    $('#tab-p').setAttribute('aria-selected', String(!r)); $('#tab-r').setAttribute('aria-selected', String(r));
+    $('#sec-products').hidden = r; $('#sec-report').hidden = !r;
+    $('#app-title').textContent = r ? 'Resumen' : 'Productos';
+    $('#fab').hidden = r || $('#app').hidden;
+    if (r) loadReport();
+  }
+  $('#tab-p').addEventListener('click', () => tab('products'));
+  $('#tab-r').addEventListener('click', () => tab('report'));
+
+  function periodRange() {
+    const now = new Date(), y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+    const v = $('#rp-period').value;
+    $('#rp-from-f').hidden = $('#rp-to-f').hidden = v !== 'custom';
+    if (v === 'today') return [new Date(y, m, d), new Date(y, m, d + 1)];
+    if (v === '7d') return [new Date(y, m, d - 6), new Date(y, m, d + 1)];
+    if (v === 'prev') return [new Date(y, m - 1, 1), new Date(y, m, 1)];
+    if (v === 'custom') {
+      const f = $('#rp-from').value, t = $('#rp-to').value;
+      if (!f || !t) { $('#rp-from').value = dayKey(new Date(y, m, 1)); $('#rp-to').value = dayKey(now); return periodRange(); }
+      const a = new Date(f + 'T00:00:00'), b = new Date(t + 'T00:00:00'); b.setDate(b.getDate() + 1);
+      return a < b ? [a, b] : [b, a];
+    }
+    return [new Date(y, m, 1), new Date(y, m, d + 1)];
+  }
+  ['#rp-period', '#rp-from', '#rp-to'].forEach(sel => $(sel).addEventListener('change', loadReport));
+
+  async function fetchMovements(from, to) {
+    const out = [];
+    for (let i = 0; ; i += 1000) {
+      const { data, error } = await sb.from('stock_movements')
+        .select('product_id,delta,stock_after,reason,unit_price,unit_cost,channel,created_at')
+        .gte('created_at', from.toISOString()).lt('created_at', to.toISOString())
+        .order('created_at', { ascending: true }).range(i, i + 999);
+      if (error) throw error;
+      out.push(...data);
+      if (data.length < 1000) return out;
+    }
+  }
+
+  function compute(movs, from, to) {
+    const byId = Object.fromEntries(products.map(p => [p.id, p]));
+    const r = { from, to, movs, units: 0, sold: 0, byCh: { fisica: { u: 0, v: 0 }, online: { u: 0, v: 0 }, otro: { u: 0, v: 0 } },
+      costSold: 0, soldWithCost: 0, soldNoCostUnits: 0, boughtUnits: 0, spent: 0, boughtNoCostUnits: 0, days: [], prod: {} };
+    const days = {};
+    for (let d = new Date(from); d < to; d.setDate(d.getDate() + 1)) days[dayKey(d)] = { u: 0, v: 0 };
+    for (const m of movs) {
+      const k = dayKey(new Date(m.created_at));
+      if (m.reason === 'salida' && m.delta < 0) {
+        const u = -m.delta, v = u * (m.unit_price || 0), ch = r.byCh[m.channel] || r.byCh.otro;
+        r.units += u; r.sold += v; ch.u += u; ch.v += v;
+        if (days[k]) { days[k].u += u; days[k].v += v; }
+        const pr = r.prod[m.product_id] || (r.prod[m.product_id] = { u: 0, v: 0, c: 0, cu: 0 });
+        pr.u += u; pr.v += v;
+        if (m.unit_cost != null) { r.costSold += u * m.unit_cost; r.soldWithCost += v; pr.c += u * m.unit_cost; pr.cu += u; }
+        else r.soldNoCostUnits += u;
+      } else if (m.reason === 'entrada' && m.delta > 0) {
+        r.boughtUnits += m.delta;
+        if (m.unit_cost != null) r.spent += m.delta * m.unit_cost; else r.boughtNoCostUnits += m.delta;
+      }
+    }
+    r.days = Object.entries(days).map(([k, x]) => ({ k, u: x.u, v: x.v }));
+    r.profit = r.soldWithCost - r.costSold;
+    r.top = Object.entries(r.prod).map(([id, x]) => ({ p: byId[id], id, ...x, profit: x.cu ? (x.v * x.cu / x.u) - x.c : null }))
+      .sort((a, b) => b.v - a.v || b.u - a.u);
+    const counted_ = products.filter(counted);
+    r.stockUnits = counted_.reduce((a, p) => a + p.stock, 0);
+    r.stockValue = counted_.reduce((a, p) => a + p.stock * p.price, 0);
+    r.stockCost = counted_.filter(p => p.cost != null).reduce((a, p) => a + p.stock * p.cost, 0);
+    r.stockNoCost = counted_.filter(p => p.cost == null && p.stock > 0).length;
+    return r;
+  }
+
+  async function loadReport() {
+    const [from, to] = periodRange();
+    const last = new Date(to); last.setDate(last.getDate() - 1);
+    const same = dayKey(from) === dayKey(last);
+    $('#rp-range').textContent = same ? dayLabel(dayKey(from), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+      : `Del ${dayLabel(dayKey(from), { day: 'numeric', month: 'long' })} al ${dayLabel(dayKey(last), { day: 'numeric', month: 'long', year: 'numeric' })}`;
+    $('#rp-tiles').innerHTML = '<div class="tile"><span>Cargando…</span></div>';
+    let movs;
+    try { movs = await fetchMovements(from, to); }
+    catch (err) { $('#rp-tiles').innerHTML = `<div class="tile"><span>${esc(friendly(err))}</span></div>`; return; }
+    report = compute(movs, from, to);
+    renderReport(report);
+  }
+
+  function renderReport(r) {
+    const chTxt = ['fisica', 'online'].filter(c => r.byCh[c].u).map(c => `${CH_LABEL[c]} ${fmt(r.byCh[c].v)}`).join(' · ');
+    const profitTile = r.soldWithCost || !r.units
+      ? `<div class="tile"><small>Ganancia</small><b>${r.units ? fmt(r.profit) : '$0'}</b><span>${r.soldNoCostUnits ? `Sin contar ${units(r.soldNoCostUnits)} sin costo registrado` : 'Vendido menos lo que costó'}</span></div>`
+      : `<div class="tile"><small>Ganancia</small><b>—</b><span>Agrega el costo de tus productos para verla</span></div>`;
+    $('#rp-tiles').innerHTML = `
+      <div class="tile"><small>Vendido</small><b>${fmt(r.sold)}</b><span>${units(r.units)}${chTxt ? ' · ' + esc(chTxt) : ''}</span></div>
+      ${profitTile}
+      <div class="tile"><small>Gastado en mercancía</small><b>${fmt(r.spent)}</b><span>${units(r.boughtUnits)} entraron${r.boughtNoCostUnits ? ` (${r.boughtNoCostUnits} sin costo)` : ''}</span></div>
+      <div class="tile"><small>Inventario hoy</small><b>${fmt(r.stockValue)}</b><span>${units(r.stockUnits)} a precio de venta${r.stockCost ? ` · costo ${fmt(r.stockCost)}` : ''}</span></div>`;
+
+    // Barras: un día = una barra, altura = pesos vendidos.
+    const max = Math.max(0, ...r.days.map(d => d.v));
+    const chart = $('#rp-chart');
+    chart.setAttribute('aria-label', `Ventas por día: total ${fmt(r.sold)}. La tabla de Excel trae el detalle.`);
+    chart.innerHTML = r.days.map(d => {
+      const h = max ? Math.round(d.v / max * 100) : 0;
+      return `<div class="bar" tabindex="0" data-tip="${esc(dayLabel(d.k, { weekday: 'short', day: 'numeric', month: 'short' }))}: ${esc(fmt(d.v))} · ${esc(units(d.u))}" aria-label="${esc(dayLabel(d.k, { day: 'numeric', month: 'long' }))}: ${esc(fmt(d.v))}, ${esc(units(d.u))}"><i style="height:${h}%"></i></div>`;
+    }).join('');
+    const ds = r.days;
+    $('#rp-chart-x').innerHTML = ds.length ? `<span>${esc(dayLabel(ds[0].k))}</span>${ds.length > 2 ? `<span>${esc(dayLabel(ds[Math.floor(ds.length / 2)].k))}</span>` : ''}${ds.length > 1 ? `<span>${esc(dayLabel(ds[ds.length - 1].k))}</span>` : ''}` : '';
+
+    $('#rp-top').innerHTML = r.top.length
+      ? `<thead><tr><th>Producto</th><th class="n">Unid.</th><th class="n">Vendido</th><th class="n">Ganancia</th></tr></thead><tbody>${r.top.slice(0, 10).map(t => `<tr><td>${esc(t.p ? t.p.name : t.id)}</td><td class="n">${t.u}</td><td class="n">${fmt(t.v)}</td><td class="n">${t.profit == null ? '—' : fmt(Math.round(t.profit))}</td></tr>`).join('')}</tbody>`
+      : '<tbody><tr><td class="muted">No hubo ventas en este periodo.</td></tr></tbody>';
+
+    const inv = products.filter(counted);
+    $('#rp-stock').innerHTML = inv.length
+      ? `<thead><tr><th>Producto</th><th class="n">Stock</th><th class="n opt">Costo c/u</th><th class="n opt">Precio c/u</th><th class="n">Valor</th></tr></thead><tbody>${inv.map(p => `<tr><td>${esc(p.name)}${isLow(p) ? ' <span class="pill low">Poco</span>' : ''}</td><td class="n">${p.stock}</td><td class="n opt">${p.cost == null ? '—' : fmt(p.cost)}</td><td class="n opt">${fmt(p.price)}</td><td class="n">${fmt(p.stock * p.price)}</td></tr>`).join('')}</tbody>`
+      : '<tbody><tr><td class="muted">Todavía no has contado el stock de ningún producto.</td></tr></tbody>';
+  }
+
+  // Tooltip de las barras (mouse y teclado).
+  const tip = document.createElement('div'); tip.className = 'chart-tip'; tip.hidden = true; document.body.appendChild(tip);
+  function showTip(bar) {
+    tip.textContent = bar.dataset.tip; tip.hidden = false;
+    const b = bar.getBoundingClientRect(), w = tip.offsetWidth;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, b.left + b.width / 2 - w / 2)) + 'px';
+    tip.style.top = Math.max(8, b.top - tip.offsetHeight - 8) + 'px';
+  }
+  ['mouseover', 'focusin'].forEach(ev => $('#rp-chart').addEventListener(ev, e => { const b = e.target.closest('.bar'); if (b) showTip(b); }));
+  ['mouseleave', 'focusout'].forEach(ev => $('#rp-chart').addEventListener(ev, () => { tip.hidden = true; }));
+  window.addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+
+  // ── Excel ────────────────────────────────────────────────
+  function loadXlsx() {
+    if (window.XLSX) return Promise.resolve();
+    return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'vendor/xlsx-0.18.5.mini.min.js'; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc); });
+  }
+  $('#rp-xlsx').addEventListener('click', async () => {
+    if (!report) { toast('Espera a que cargue el resumen.', true); return; }
+    busy('Preparando Excel…');
+    try { await loadXlsx(); } catch (e) { busy(); toast('No se pudo preparar el Excel. Revisa tu internet.', true); return; }
+    const r = report, X = window.XLSX, byId = Object.fromEntries(products.map(p => [p.id, p]));
+    const last = new Date(r.to); last.setDate(last.getDate() - 1);
+    const sheet = (rows, widths) => { const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = widths.map(w => ({ wch: w })); return ws; };
+    const wb = X.utils.book_new();
+    X.utils.book_append_sheet(wb, sheet([
+      ['MAVE Mujer · Resumen de ventas'], [],
+      ['Desde', dayKey(r.from)], ['Hasta', dayKey(last)], [],
+      ['Total vendido ($)', r.sold], ['Unidades vendidas', r.units],
+      ['Vendido en local ($)', r.byCh.fisica.v], ['Vendido online ($)', r.byCh.online.v],
+      ['Costo de lo vendido ($)', r.costSold], ['Ganancia ($)', r.soldWithCost ? r.profit : ''],
+      ['Unidades vendidas sin costo registrado', r.soldNoCostUnits], [],
+      ['Gastado en mercancía ($)', r.spent], ['Unidades que entraron', r.boughtUnits], [],
+      ['Inventario hoy: unidades', r.stockUnits], ['Inventario hoy: valor a precio de venta ($)', r.stockValue], ['Inventario hoy: valor a costo ($)', r.stockCost]
+    ], [42, 16]), 'Resumen');
+    X.utils.book_append_sheet(wb, sheet([['Fecha', 'Unidades vendidas', 'Vendido ($)'], ...r.days.map(d => [d.k, d.u, d.v])], [12, 18, 14]), 'Ventas por día');
+    X.utils.book_append_sheet(wb, sheet([['Producto', 'Marca', 'Unidades', 'Vendido ($)', 'Ganancia ($)'],
+      ...r.top.map(t => [t.p ? t.p.name : t.id, t.p ? t.p.brand : '', t.u, t.v, t.profit == null ? '' : Math.round(t.profit)])], [34, 18, 10, 14, 14]), 'Por producto');
+    X.utils.book_append_sheet(wb, sheet([['Fecha', 'Hora', 'Producto', 'Tipo', 'Canal', 'Unidades', 'Precio c/u ($)', 'Total venta ($)', 'Costo c/u ($)', 'Quedaron'],
+      ...r.movs.map(m => { const d = new Date(m.created_at), p = byId[m.product_id];
+        return [dayKey(d), `${pad(d.getHours())}:${pad(d.getMinutes())}`, p ? p.name : m.product_id, REASONS[m.reason] || m.reason,
+          m.channel ? CH_LABEL[m.channel] : '', m.delta, m.unit_price == null ? '' : m.unit_price,
+          m.reason === 'salida' && m.unit_price != null ? -m.delta * m.unit_price : '', m.unit_cost == null ? '' : m.unit_cost, m.stock_after]; })],
+      [12, 7, 34, 13, 9, 10, 14, 15, 13, 10]), 'Movimientos');
+    X.utils.book_append_sheet(wb, sheet([['Producto', 'Marca', 'Categoría', 'Stock', 'Avisar con', 'Costo c/u ($)', 'Precio c/u ($)', 'Valor a precio ($)', 'Valor a costo ($)'],
+      ...products.map(p => [p.name, p.brand, catLabel(p.category), counted(p) ? p.stock : 'Sin contar', p.min_stock, p.cost == null ? '' : p.cost, p.price,
+        counted(p) ? p.stock * p.price : '', counted(p) && p.cost != null ? p.stock * p.cost : ''])], [34, 18, 26, 10, 10, 13, 13, 16, 16]), 'Inventario');
+    X.writeFile(wb, `MAVE-ventas-${dayKey(r.from)}-a-${dayKey(last)}.xlsx`);
+    busy(); toast('Excel descargado.');
   });
 
   // ── Inicio ────────────────────────────────────────────────

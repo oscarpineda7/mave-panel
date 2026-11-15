@@ -3,7 +3,7 @@
 ## Dónde está publicado
 - **Tienda:** Netlify → <https://mavemujer.netlify.app/>
 - **Panel (productos + inventario):** GitHub Pages → <https://oscarpineda7.github.io/mave-panel/admin.html>
-  Se publica solo cada vez que cambia la rama `main` (`.github/workflows/panel.yml`).
+  Se publica con `./publicar_panel.sh` (copia el panel a la rama `gh-pages`). En GitHub › Settings › Pages la fuente debe ser la rama `gh-pages`.
   También funciona en Netlify (`/admin.html`) si se vuelve a subir la carpeta `sitio/`.
 
 ## Inventario (noviembre 2026)
@@ -13,7 +13,10 @@
 - Arriba aparece un aviso con los productos con **poco stock** (filtro “Poco stock”).
 - **Etiquetas QR:** se imprimen desde el panel. Al escanearlas con la cámara del celular se abre el panel en ese producto.
 - Base de datos: `supabase/05_inventario.sql` (columnas `stock`, `min_stock`, tabla `stock_movements`, funciones `adjust_stock` y `set_stock`). Los visitantes de la tienda no pueden ver cuántas unidades hay.
-- Pruebas: `pruebas/e2e_inventario.js`.
+- **Ventas:** el botón **−** registra una venta con el precio de la tienda y el canal elegido arriba (**Local** u **Online / WhatsApp**). En el detalle del producto, “Vendí” permite poner otra cantidad, otro precio (descuento) y el canal.
+- **Costo:** cada producto puede tener su costo (no se ve en la tienda). “Llegó mercancía” pregunta cuánto se pagó por unidad y actualiza el costo.
+- **Pestaña Resumen:** vendido (por canal), ganancia, gastado en mercancía, valor del inventario, ventas por día y lo más vendido, por periodo. **Descargar Excel** trae 5 hojas: Resumen, Ventas por día, Por producto, Movimientos e Inventario.
+- Pruebas: `pruebas/e2e_inventario.js`, `pruebas/e2e_ventas.js` (y `pruebas/e2e.js` de la tienda).
 
 ## Qué hay en esta carpeta
 

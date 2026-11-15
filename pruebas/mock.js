@@ -74,16 +74,18 @@ async function rest(req, res, url) {
   const w = who(req), p = url.searchParams;
   const filters = [];
   for (const [k, v] of p) {
-    if (['select', 'order', 'limit', 'columns', 'on_conflict'].includes(k)) continue;
-    const m = v.match(/^eq\.(.*)$/); if (!m) throw new Error('filtro no soportado ' + k + '=' + v);
-    filters.push(`x.${ident(k)}::text = ${lit(m[1])}`);
+    if (['select', 'order', 'limit', 'offset', 'columns', 'on_conflict'].includes(k)) continue;
+    const m = v.match(/^(eq|gte|gt|lte|lt)\.(.*)$/); if (!m) throw new Error('filtro no soportado ' + k + '=' + v);
+    if (m[1] === 'eq') filters.push(`x.${ident(k)}::text = ${lit(m[2])}`);
+    else filters.push(`x.${ident(k)} ${{ gte: '>=', gt: '>', lte: '<=', lt: '<' }[m[1]]} ${lit(m[2])}`);
   }
   const where = filters.length ? 'where ' + filters.join(' and ') : '';
   const sel = (p.get('select') || '*').split(',').map(c => c === '*' ? 'x.*' : 'x.' + ident(c)).join(',');
   const orders = p.getAll('order').join(',');
   const orderBy = orders ? 'order by ' + orders.split(',').map(o => { const [c, dir] = o.split('.'); return `${ident(c)} ${dir === 'desc' ? 'desc' : 'asc'}`; }).join(',') : '';
   let q;
-  if (req.method === 'GET') q = `select coalesce(json_agg(t),'[]') from (select ${sel} from public.${table} x ${where} ${orderBy}) t`;
+  const lim = p.get('limit') ? ` limit ${parseInt(p.get('limit'), 10)}` : '', off = p.get('offset') ? ` offset ${parseInt(p.get('offset'), 10)}` : '';
+  if (req.method === 'GET') q = `select coalesce(json_agg(t),'[]') from (select ${sel} from public.${table} x ${where} ${orderBy}${lim}${off}) t`;
   else {
     const body = JSON.parse((await readBody(req)).toString() || 'null');
     const row = Array.isArray(body) ? body[0] : body;

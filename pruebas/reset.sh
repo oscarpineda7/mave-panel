@@ -1,6 +1,6 @@
 set -e
 export PGHOST=/var/run/postgresql
-P=/home/user/obras/mave-mujer-web/supabase; T=$(dirname "$0")
+P=/home/user/mave-panel/supabase; T=$(dirname "$0")
 psql -q -d postgres -c 'drop database if exists mave' -c 'create database mave'
 export PGDATABASE=mave
 psql -v ON_ERROR_STOP=1 -q -f $T/bootstrap.sql
