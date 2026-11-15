@@ -58,6 +58,22 @@ function check(name, ok, extra) { results.push(`${ok ? 'OK   ' : 'FALLA'} ${name
   check('Deshacer todo: historial vacío', true);
   await adm.locator('#stock-dlg [data-close]').tap();
   check('Lista: vuelve a "Contar stock"', await row().locator('[data-stock].btn').count() === 1);
+
+  // Productos que ya estaban en la tienda: contar + poner lo que se pagó c/u, y la venta lleva ese costo
+  const { execSync } = require('child_process');
+  const q = sql => execSync(`psql -qAt -h /var/run/postgresql -d mave -c "${sql}"`).toString().trim();
+  const other = q("select id from public.products where id <> 'masmelo' order by id limit 1");
+  await adm.locator(`.row[data-id="${other}"] [data-stock]`).tap(); await adm.waitForSelector('#stock-dlg[open]');
+  await adm.fill('#sd-count', '4'); await adm.fill('#sd-count-cost', '25.000'); await adm.tap('#sd-count-form button');
+  await adm.waitForFunction(() => document.querySelector('#sd-num').textContent === '4');
+  check('Conteo con costo: guarda el costo', q(`select cost from public.products where id='${other}'`) === '25000');
+  check('Conteo con costo: el stock inicial lleva el costo', q(`select unit_cost from public.stock_movements where product_id='${other}' and reason='inicial'`) === '25000');
+  await adm.tap('#sd-dec'); await adm.waitForFunction(() => document.querySelector('#sd-num').textContent === '3');
+  check('Venta posterior lleva el costo', q(`select unit_cost from public.stock_movements where product_id='${other}' and reason='salida'`) === '25000');
+  await adm.fill('#sd-count-cost', '27000'); await adm.tap('#sd-count-form button');
+  await adm.waitForFunction(() => /costo/.test(document.querySelector('#toast').textContent));
+  check('Solo cambiar el costo, sin contar', q(`select cost||'/'||stock from public.products where id='${other}'`) === '27000/3', await adm.textContent('#toast'));
+  await adm.screenshot({ path: SHOTS + '/d3-costo.png' });
   const bad = errors.filter(e => !/status of 400/.test(e)); // el 400 es el "no se puede deshacer" esperado
   check('Sin errores en consola', bad.length === 0, bad.join(' | '));
   await b.close();

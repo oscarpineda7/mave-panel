@@ -337,7 +337,7 @@
     toast(`Deshecho. ${p.name}: ${counted(data) ? units(data.stock) : 'sin contar'}.`);
   });
   function openStock(p) {
-    stockP = p; $('#sd-in').value = ''; $('#sd-count').value = ''; $('#sd-in-cost').value = p.cost != null ? String(p.cost) : '';
+    stockP = p; $('#sd-in').value = ''; $('#sd-count').value = ''; $('#sd-in-cost').value = p.cost != null ? String(p.cost) : ''; $('#sd-count-cost').value = p.cost != null ? String(p.cost) : '';
     $('#sd-sale-n').value = '1'; $('#sd-sale-price').value = String(p.price); $('#sd-sale-ch').value = channel;
     $('#sd-history').innerHTML = '<li class="muted">Cargando…</li>';
     renderStock(); openDlg($('#stock-dlg')); loadHistory(p);
@@ -362,10 +362,23 @@
     if (Number.isNaN(cost)) { toast('Escribe lo que pagaste por unidad, solo números.', true); $('#sd-in-cost').focus(); return; }
     if (await changeStock(stockP, n, { reason: 'entrada', cost })) $('#sd-in').value = '';
   });
+  // Lo que ya hay en la tienda: cuántas unidades y cuánto costó cada una (sirve para la ganancia de las ventas).
+  // Se puede llenar solo uno de los dos.
   $('#sd-count-form').addEventListener('submit', async e => {
-    e.preventDefault(); const n = parseCount($('#sd-count').value);
-    if (n === null || isNaN(n)) { toast('Escribe cuántas unidades hay. Ej.: 10', true); $('#sd-count').focus(); return; }
-    if (await setStock(stockP, n, counted(stockP) ? 'conteo' : 'inicial')) $('#sd-count').value = '';
+    e.preventDefault(); const p = stockP; if (!p) return;
+    const nTxt = $('#sd-count').value.trim(), n = nTxt ? parseCount(nTxt) : null;
+    const costTxt = $('#sd-count-cost').value.trim(), cost = costTxt ? parsePrice(costTxt) : null;
+    if (nTxt && (n === null || isNaN(n))) { toast('Escribe cuántas unidades hay. Ej.: 10', true); $('#sd-count').focus(); return; }
+    if (Number.isNaN(cost)) { toast('Escribe lo que pagaste por unidad, solo números. Ej.: 25000', true); $('#sd-count-cost').focus(); return; }
+    const costChanged = cost !== null && cost !== p.cost;
+    if (!nTxt && !costChanged) { toast(cost === null ? 'Escribe cuántas unidades hay o cuánto pagaste por cada una.' : 'Ese costo ya estaba guardado.', cost === null); return; }
+    if (costChanged) {
+      const { data, error } = await sb.from('products').update({ cost }).eq('id', p.id).select().maybeSingle();
+      if (error || !data) { toast(error ? friendly(error) : 'No se pudo guardar el costo.', true); return; }
+      applyRow(p, data);
+      if (!nTxt) { toast(`${p.name}: costo ${fmt(cost)} c/u guardado.`); return; }
+    }
+    if (await setStock(p, n, counted(p) ? 'conteo' : 'inicial')) $('#sd-count').value = '';
   });
   $('#sd-min-form').addEventListener('submit', async e => {
     e.preventDefault(); const n = parseCount($('#sd-min').value), p = stockP;

@@ -479,8 +479,12 @@ dialog.fallback{position:fixed;inset:0;margin:auto;z-index:30}
       </div>
       <button class="btn btn-ghost" type="submit">Sumar al stock</button>
     </form>
-    <form class="sd-row" id="sd-count-form">
-      <div class="field"><label for="sd-count">Conté la estantería: hay exactamente</label><input id="sd-count" type="number" inputmode="numeric" min="0" step="1"></div>
+    <form class="sd-form" id="sd-count-form">
+      <span class="lbl">Lo que ya tengo (conté la estantería)</span>
+      <div class="grid3">
+        <div class="field"><label for="sd-count">Hay exactamente</label><input id="sd-count" type="number" inputmode="numeric" min="0" step="1"></div>
+        <div class="field"><label for="sd-count-cost">Pagué c/u</label><input id="sd-count-cost" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej.: 25000"></div>
+      </div>
       <button class="btn btn-ghost" type="submit">Guardar</button>
     </form>
     <form class="sd-row" id="sd-min-form">
