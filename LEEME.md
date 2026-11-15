@@ -3,7 +3,7 @@
 ## Dónde está publicado
 - **Tienda:** Netlify → <https://mavemujer.netlify.app/>
 - **Panel (productos + inventario):** GitHub Pages → <https://oscarpineda7.github.io/mave-panel/admin.html>
-  Se publica con `./publicar_panel.sh` (copia el panel a la rama `gh-pages`). En GitHub › Settings › Pages la fuente debe ser la rama `gh-pages`.
+  Se publica solo cada vez que cambia la rama `main` (`.github/workflows/panel.yml`, fuente de Pages: GitHub Actions). Alternativa: `./publicar_panel.sh` publica en la rama `gh-pages`.
   También funciona en Netlify (`/admin.html`) si se vuelve a subir la carpeta `sitio/`.
 
 ## Inventario (noviembre 2026)
