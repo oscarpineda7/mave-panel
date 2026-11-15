@@ -312,15 +312,30 @@
   const REASONS = { entrada: 'Entrada', salida: 'Venta', conteo: 'Conteo', inicial: 'Stock inicial', ajuste: 'Ajuste' };
   async function loadHistory(p) {
     const ul = $('#sd-history');
-    const { data, error } = await sb.from('stock_movements').select('delta,stock_after,reason,unit_price,channel,created_at').eq('product_id', p.id).order('created_at', { ascending: false }).limit(10);
+    const { data, error } = await sb.from('stock_movements').select('id,delta,stock_after,reason,unit_price,channel,created_at').eq('product_id', p.id).order('id', { ascending: false }).limit(10);
     if (stockP !== p) return;
     if (error) { ul.innerHTML = '<li class="muted">No se pudo cargar el historial.</li>'; return; }
     ul.innerHTML = (data || []).length ? data.map(m => {
       const d = new Date(m.created_at);
       const when = d.toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit' });
-      return `<li><span class="d ${m.delta > 0 ? 'up' : 'down'}">${m.delta > 0 ? '+' : ''}${m.delta}</span><span>${esc(REASONS[m.reason] || m.reason)}${m.reason === 'salida' && m.channel ? ' ' + esc(CH_LABEL[m.channel].toLowerCase()) : ''}${m.reason === 'salida' && m.unit_price != null ? ' · ' + fmt(-m.delta * m.unit_price) : ''} · quedan ${m.stock_after}</span><time datetime="${esc(m.created_at)}">${esc(when)}</time></li>`;
+      return `<li><span class="d ${m.delta > 0 ? 'up' : 'down'}">${m.delta > 0 ? '+' : ''}${m.delta}</span><span>${esc(REASONS[m.reason] || m.reason)}${m.reason === 'salida' && m.channel ? ' ' + esc(CH_LABEL[m.channel].toLowerCase()) : ''}${m.reason === 'salida' && m.unit_price != null ? ' · ' + fmt(-m.delta * m.unit_price) : ''} · quedan ${m.stock_after}</span><time datetime="${esc(m.created_at)}">${esc(when)}</time><button class="undo" type="button" data-undo="${m.id}" aria-label="Deshacer este movimiento">Deshacer</button></li>`;
     }).join('') : '<li class="muted">Todavía no hay movimientos.</li>';
   }
+  // Deshacer: primer toque pide confirmación ("¿Seguro?"), el segundo lo deshace.
+  $('#sd-history').addEventListener('click', async e => {
+    const b = e.target.closest('[data-undo]'); const p = stockP; if (!b || !p || b.disabled) return;
+    if (!b.classList.contains('sure')) {
+      $('#sd-history').querySelectorAll('.undo.sure').forEach(x => { x.classList.remove('sure'); x.textContent = 'Deshacer'; });
+      b.classList.add('sure'); b.textContent = '¿Seguro?';
+      setTimeout(() => { if (b.isConnected) { b.classList.remove('sure'); b.textContent = 'Deshacer'; } }, 4000);
+      return;
+    }
+    b.disabled = true; b.textContent = '…';
+    const { data, error } = await sb.rpc('undo_movement', { p_movement: Number(b.dataset.undo) });
+    if (error || !data) { toast(error ? friendly(error) : 'No se pudo deshacer.', true); loadHistory(p); return; }
+    applyRow(p, data); if (stockP === p) loadHistory(p);
+    toast(`Deshecho. ${p.name}: ${counted(data) ? units(data.stock) : 'sin contar'}.`);
+  });
   function openStock(p) {
     stockP = p; $('#sd-in').value = ''; $('#sd-count').value = ''; $('#sd-in-cost').value = p.cost != null ? String(p.cost) : '';
     $('#sd-sale-n').value = '1'; $('#sd-sale-price').value = String(p.price); $('#sd-sale-ch').value = channel;

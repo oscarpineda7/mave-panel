@@ -17,6 +17,7 @@
 - **Costo:** cada producto puede tener su costo (no se ve en la tienda). “Llegó mercancía” pregunta cuánto se pagó por unidad y actualiza el costo.
 - **Pestaña Resumen:** vendido (por canal), ganancia, gastado en mercancía, valor del inventario, ventas por día y lo más vendido, por periodo. **Descargar Excel** trae 5 hojas: Resumen, Ventas por día, Por producto, Movimientos e Inventario.
 - **Aviso por correo:** `supabase/06_aviso_correo.sql` envía un correo (vía Resend) cuando un producto baja hasta su mínimo o se agota. Se ejecuta una vez en el SQL Editor reemplazando `PEGA_AQUI_LA_CLAVE` por la clave de Resend; el aviso llega al correo de la cuenta de administración.
+- **Corregir errores:** `supabase/07_deshacer.sql` agrega el botón "Deshacer" en los últimos movimientos de cada producto (devuelve el stock, quita la venta del Resumen). `supabase/08_borrar_inventario.sql` borra todo el inventario (historial, unidades y costos) para empezar de cero; no toca productos ni fotos.
 - Pruebas: `pruebas/e2e_inventario.js`, `pruebas/e2e_ventas.js` (y `pruebas/e2e.js` de la tienda).
 
 ## Qué hay en esta carpeta
